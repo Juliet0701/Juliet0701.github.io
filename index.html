@@ -3,235 +3,305 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的个人主页</title>
+    <title>我的主页 - 典雅版</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* 全局设置 */
+        /* --- 全局定义 --- */
         :root {
-            --primary-color: #2563eb;
-            --bg-color: #f8fafc;
-            --text-main: #1e293b;
-            --text-secondary: #64748b;
-            --card-bg: #ffffff;
+            --gold-color: #cba258; /* 核心金色 */
+            --gold-light: #ecdba8; /* 浅金色 */
+            --bg-cream: #fdfcf8;   /* 奶油色背景 */
+            --text-dark: #4a4238;  /* 深棕色文字 */
+            --section-spacing: 6rem;
         }
 
         body {
-            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
             margin: 0;
-            line-height: 1.6;
+            font-family: 'Noto Serif SC', 'Times New Roman', serif; /* 使用衬线体增加书卷气 */
+            background-color: var(--bg-cream);
+            color: var(--text-dark);
+            background-image: 
+                radial-gradient(circle at 100% 0%, rgba(203, 162, 88, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 0% 100%, rgba(203, 162, 88, 0.05) 0%, transparent 20%); /* 模拟微妙的背景光晕 */
+            line-height: 1.8;
         }
 
-        /* 导航栏 */
+        h1, h2, h3 {
+            font-family: 'Cinzel Decorative', cursive, serif; /* 标题使用装饰性更强的字体 */
+            font-weight: 700;
+        }
+
+        /* --- 通用装饰框架类 --- */
+        .ornament-frame {
+            border: 3px solid transparent;
+            border-image: linear-gradient(45deg, var(--gold-color), var(--gold-light), var(--gold-color)) 1;
+            padding: 2rem;
+            position: relative;
+            background: #fff;
+            box-shadow: 0 4px 20px rgba(203, 162, 88, 0.1);
+        }
+        /* 模拟四个角的装饰 */
+        .ornament-frame::before, .ornament-frame::after {
+            content: '❖'; /* 使用特殊符号模拟角标 */
+            position: absolute;
+            color: var(--gold-color);
+            font-size: 1.5rem;
+        }
+        .ornament-frame::before { top: -12px; left: -12px; }
+        .ornament-frame::after { bottom: -12px; right: -12px; }
+
+
+        /* --- 导航栏 --- */
         nav {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            padding: 1.5rem;
+            background: rgba(253, 252, 248, 0.9);
+            border-bottom: 2px solid var(--gold-light);
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 100;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            backdrop-filter: blur(5px);
         }
-        
-        .nav-container {
-            max-width: 1000px;
-            margin: 0 auto;
+        nav a {
+            margin: 0 20px;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: bold;
+            font-size: 1.1rem;
+            position: relative;
+            transition: color 0.3s;
+        }
+        nav a:hover { color: var(--gold-color); }
+        nav a::after {
+            content: '•';
+            position: absolute;
+            color: var(--gold-color);
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        nav a:hover::after { opacity: 1; }
+
+
+        /* --- Hero 首屏区域 --- */
+        .hero {
+            /* 【重要】请在这里替换你的首屏大图 URL */
+            background-image: url('https://placehold.co/1920x1080/fdfcf8/cba258?text=Your+Elegant+Photo+Here');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 1rem 2rem;
-        }
-
-        .logo { font-weight: 700; font-size: 1.2rem; color: var(--primary-color); }
-        .nav-links a { margin-left: 20px; text-decoration: none; color: var(--text-main); font-size: 0.9rem; transition: color 0.3s;}
-        .nav-links a:hover { color: var(--primary-color); }
-
-        /* 通用容器 */
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        /* Hero 区域 (首屏) */
-        header {
-            padding: 8rem 0 4rem;
+            justify-content: center;
             text-align: center;
+            position: relative;
+            margin-bottom: var(--section-spacing);
         }
-        
-        header h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, #2563eb 0%, #a855f7 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        /* 在图片上叠加一层金色蒙版，增加氛围 */
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(to bottom, rgba(253, 252, 248, 0.2), rgba(253, 252, 248, 0.8));
+            pointer-events: none;
         }
 
-        header p {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            max-width: 600px;
+        .hero-content {
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 3rem 5rem;
+            border: 2px solid var(--gold-color);
+            /* 双重边框效果 */
+            outline: 4px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 0 6px var(--gold-light);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin: 0;
+            color: var(--gold-color);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        .hero p { font-size: 1.5rem; margin-top: 1rem; color: var(--text-dark); }
+
+
+        /* --- 区域通用样式 --- */
+        .container {
+            max-width: 900px;
             margin: 0 auto;
+            padding: 0 2rem;
         }
-
-        /* 模块标题 */
         .section-title {
             text-align: center;
-            margin: 4rem 0 2rem;
-            font-size: 1.8rem;
+            font-size: 2.5rem;
+            color: var(--gold-color);
+            margin-bottom: 3rem;
             position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .section-title::after {
+        /* 标题两侧的装饰线 */
+        .section-title::before, .section-title::after {
             content: '';
-            display: block;
+            height: 2px;
             width: 50px;
-            height: 3px;
-            background: var(--primary-color);
-            margin: 10px auto 0;
+            background: var(--gold-color);
+            margin: 0 20px;
         }
 
-        /* 爱好卡片 (Grid布局) */
+        /* --- 爱好部分 (图文卡片) --- */
         .hobby-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin-bottom: var(--section-spacing);
         }
-
-        .card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s, box-shadow 0.2s;
+        .hobby-card {
+            text-align: center;
         }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        .hobby-img-frame {
+            /* 【重要】替换爱好图片 */
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border: 3px double var(--gold-color); /* 双线金色边框 */
+            padding: 5px;
+            background: #fff;
         }
+        .hobby-card h3 { color: var(--gold-color); margin-top: 1.5rem; }
 
-        .card-icon { font-size: 2rem; margin-bottom: 10px; display: block; }
-        .card h3 { margin: 0 0 10px 0; font-size: 1.2rem; }
-        .card p { font-size: 0.9rem; color: var(--text-secondary); margin: 0; }
 
-        /* 学习生涯 (时间轴) */
+        /* --- 学习生涯 (典雅时间轴) --- */
+        .timeline-section { margin-bottom: var(--section-spacing); }
         .timeline {
-            position: relative;
+            border-left: 3px solid var(--gold-light);
             padding-left: 30px;
-            border-left: 2px solid #e2e8f0;
+            margin-left: 20px;
         }
-
         .timeline-item {
             position: relative;
             margin-bottom: 40px;
         }
-
+        /* 时间轴节点装饰 */
         .timeline-item::before {
-            content: '';
+            content: '✦'; /* 使用星形符号代替圆点 */
             position: absolute;
-            left: -37px;
-            top: 5px;
-            width: 12px;
-            height: 12px;
-            background: var(--primary-color);
-            border-radius: 50%;
-            border: 2px solid #fff;
+            left: -39px;
+            top: 0px;
+            color: var(--gold-color);
+            font-size: 1.2rem;
+            background: var(--bg-cream);
+            padding: 2px;
         }
-
-        .year {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
+        .year-tag {
+            display: inline-block;
+            background: var(--gold-color);
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 10px;
         }
+        .timeline-content h3 { margin: 0; color: var(--text-dark); }
+        .timeline-content p { margin-top: 10px; }
 
-        .timeline-title { font-size: 1.2rem; font-weight: 600; margin: 0; }
-        .timeline-desc { margin-top: 5px; color: var(--text-secondary); }
 
-        /* 页脚 */
+        /* --- 页脚 --- */
         footer {
             text-align: center;
-            padding: 4rem 0;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            border-top: 1px solid #e2e8f0;
-            margin-top: 4rem;
+            padding: 3rem;
+            margin-top: var(--section-spacing);
+            border-top: 1px solid var(--gold-light);
+            color: var(--gold-color);
+            background-image: linear-gradient(to top, rgba(203, 162, 88, 0.05), transparent);
         }
 
         /* 移动端适配 */
-        @media (max-width: 600px) {
-            header h1 { font-size: 2rem; }
-            .nav-container { padding: 1rem; }
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .hero-content { padding: 2rem; width: 80%; }
+            .section-title { font-size: 2rem; }
+            .section-title::before, .section-title::after { width: 30px; }
         }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="nav-container">
-            <div class="logo">MySite.</div>
-            <div class="nav-links">
-                <a href="#about">关于</a>
-                <a href="#hobbies">爱好</a>
-                <a href="#journey">生涯</a>
-            </div>
-        </div>
+        <a href="#about">关于我</a>
+        <a href="#hobbies">我的爱好</a>
+        <a href="#journey">学习生涯</a>
     </nav>
 
+    <header class="hero" id="about">
+        <div class="hero-content">
+            <h1>[你的名字]</h1>
+            <p>———— 记录时光与成长的篇章 ————</p>
+        </div>
+    </header>
+
     <div class="container">
-        <header id="about">
-            <h1>你好，我是陈立航</h1>
-            <p>一名热衷于探索未知的学习者。在这里记录我的思考、创作与成长轨迹。</p>
-        </header>
+        <div class="ornament-frame" style="text-align: center; margin-bottom: var(--section-spacing);">
+            <h2 style="color: var(--gold-color); margin-top: 0;">你好，访客</h2>
+            <p style="max-width: 700px; margin: 0 auto;">
+                这里写一段比较文艺的自我介绍。例如：我是一名在数字世界漫步的旅人，钟情于代码的逻辑之美，也沉醉于影像的光影变幻。在这个小小的角落，珍藏着我的热爱与足迹。
+            </p>
+            <p style="margin-top: 20px; font-weight: bold; color: var(--gold-color);">
+                📍 现居 [城市] &nbsp; | &nbsp; 🏫 主修 [专业]
+            </p>
+        </div>
 
-        <h2 class="section-title" id="hobbies">我的爱好</h2>
+        <h2 class="section-title" id="hobbies">珍藏的爱好</h2>
         <div class="hobby-grid">
-            <div class="card">
-                <span class="card-icon">📷</span>
-                <h3>街头摄影</h3>
-                <p>喜欢用镜头记录城市的角落。常用的设备是 Fujifilm XT-4。</p>
+            <div class="hobby-card">
+                <img src="https://placehold.co/400x300/eaddc5/cba258?text=Photo+1" alt="摄影" class="hobby-img-frame">
+                <h3>光影记录 (摄影)</h3>
+                <p>捕捉日常生活中不经意的美好瞬间，偏爱胶片质感的色彩。</p>
             </div>
-            <div class="card">
-                <span class="card-icon">💻</span>
-                <h3>编程开发</h3>
-                <p>正在学习前端技术，喜欢折腾有趣的小工具和自动化脚本。</p>
-            </div>
-            <div class="card">
-                <span class="card-icon">🏸</span>
-                <h3>羽毛球</h3>
-                <p>每周两次的运动时间，享受挥洒汗水的快感。</p>
-            </div>
-            <div class="card">
-                <span class="card-icon">📚</span>
-                <h3>科幻阅读</h3>
-                <p>三体迷。最近正在重读阿西莫夫的《基地》系列。</p>
+            <div class="hobby-card">
+                <img src="https://placehold.co/400x300/eaddc5/cba258?text=Photo+2" alt="阅读" class="hobby-img-frame">
+                <h3>静谧阅读</h3>
+                <p>沉浸在经典文学构筑的世界中，最近在研读欧洲历史。</p>
             </div>
         </div>
 
-        <h2 class="section-title" id="journey">学习生涯</h2>
-        <div class="timeline">
-            <div class="timeline-item">
-                <div class="year">2023 - 至今</div>
-                <h3 class="timeline-title">某某大学 / 计算机科学与技术</h3>
-                <p class="timeline-desc">主修课程：数据结构、算法分析、Web开发。加入校学生会宣传部。</p>
-            </div>
-            <div class="timeline-item">
-                <div class="year">2020 - 2023</div>
-                <h3 class="timeline-title">某某高级中学</h3>
-                <p class="timeline-desc">理科班。在校期间获得过物理竞赛市级二等奖。</p>
-            </div>
-            <div class="timeline-item">
-                <div class="year">2019</div>
-                <h3 class="timeline-title">第一次接触编程</h3>
-                <p class="timeline-desc">自学 Python 基础，编写了第一个“Hello World”程序，从此对代码产生兴趣。</p>
+        <h2 class="section-title" id="journey">成长轨迹</h2>
+        <div class="timeline-section ornament-frame">
+            <div class="timeline">
+                <div class="timeline-item">
+                    <span class="year-tag">2023 - 至今</span>
+                    <div class="timeline-content">
+                        <h3>步入大学殿堂 / [你的专业]</h3>
+                        <p>开始系统性地学习专业知识，并在校级比赛中崭露头角。担任了[某社团]的负责人。</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <span class="year-tag">2020 - 2023</span>
+                    <div class="timeline-content">
+                        <h3>高中生涯 / 沉淀与探索</h3>
+                        <p>专注于理科基础学科的学习，培养了逻辑思维能力。期间获得了物理竞赛奖项。</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <span class="year-tag">启蒙</span>
+                    <div class="timeline-content">
+                        <h3>初识 [你擅长的领域]</h3>
+                        <p>第一次接触到相关知识，便产生了浓厚的兴趣，开启了自学之路。</p>
+                    </div>
+                </div>
             </div>
         </div>
+
     </div>
 
     <footer>
-        <p>© 2025 陈立航. Built with Code.</p>
+        <p>✦ © 2025 陈立航 ✦</p>
     </footer>
 
 </body>
