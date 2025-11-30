@@ -8,7 +8,7 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <style>
-        /* --- 样式部分 --- */
+        /* --- 核心样式 --- */
         :root {
             --gold-color: #cba258;
             --gold-light: #ecdba8;
@@ -26,7 +26,7 @@
                 radial-gradient(circle at 100% 0%, rgba(203, 162, 88, 0.05) 0%, transparent 20%),
                 radial-gradient(circle at 0% 100%, rgba(203, 162, 88, 0.05) 0%, transparent 20%);
             line-height: 1.8;
-            overflow-x: hidden; /* 防止动画滑入时出现横向滚动条 */
+            overflow-x: hidden;
         }
 
         h1, h2, h3 {
@@ -44,6 +44,7 @@
             box-shadow: 0 4px 20px rgba(203, 162, 88, 0.1);
             margin-bottom: 2rem;
         }
+        /* 角标装饰 */
         .ornament-frame::before { content: '❖'; position: absolute; top: -12px; left: -12px; color: var(--gold-color); font-size: 1.5rem; background: #fff;}
         .ornament-frame::after { content: '❖'; position: absolute; bottom: -12px; right: -12px; color: var(--gold-color); font-size: 1.5rem; background: #fff;}
 
@@ -58,7 +59,6 @@
             width: 100%;
             top: 0;
             z-index: 100;
-            transition: all 0.3s ease;
         }
         nav a {
             margin: 0 20px;
@@ -82,11 +82,9 @@
             justify-content: center;
             text-align: center;
             position: relative;
+            background-attachment: fixed; /* 视差滚动 */
             margin-bottom: var(--section-spacing);
         }
-        /* 增加视差滚动效果 */
-        .hero { background-attachment: fixed; }
-
         .hero-content {
             z-index: 1;
             background: rgba(255, 255, 255, 0.85);
@@ -130,11 +128,47 @@
             background: #fff;
             transition: transform 0.5s ease;
         }
-        /* 鼠标悬停时图片微微放大 */
         .hobby-img:hover { transform: scale(1.03); }
-
         .hobby-text { flex: 1; }
         .hobby-text h3 { font-size: 1.8rem; color: var(--gold-color); margin-bottom: 1rem; }
+
+        /* --- 新增：学习生涯时间轴样式 --- */
+        .timeline {
+            border-left: 3px solid var(--gold-light);
+            padding-left: 40px;
+            margin-left: 20px;
+            position: relative;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 50px;
+        }
+        /* 时间节点星星图标 */
+        .timeline-icon {
+            position: absolute;
+            left: -51px;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            background: var(--bg-cream);
+            color: var(--gold-color);
+            font-size: 1.5rem;
+            line-height: 20px;
+            text-align: center;
+        }
+        .year-tag {
+            display: inline-block;
+            background: var(--gold-color);
+            color: #fff;
+            padding: 4px 15px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+        .timeline-content h3 { margin: 0 0 10px 0; color: var(--text-dark); font-size: 1.4rem; }
+        .timeline-content p { color: #666; margin: 0; }
 
         footer {
             text-align: center;
@@ -157,6 +191,7 @@
     <nav>
         <a href="#about">关于我</a>
         <a href="#hobbies">我的爱好</a>
+        <a href="#journey">学习生涯</a>
     </nav>
 
     <header class="hero" id="about">
@@ -171,7 +206,8 @@
         <div class="ornament-frame" style="text-align: center;" data-aos="fade-up" data-aos-duration="1000">
             <h2 style="color: var(--gold-color);">关于我</h2>
             <p>
-                这里是 Li Hang 的个人空间。我喜欢...（请在此处粘贴你的简介）
+                这里是 Li Hang 的个人空间。我喜欢探索代码的世界，也沉醉于光影的艺术。
+                <br>（请在此处粘贴你的简介）
             </p>
         </div>
 
@@ -201,6 +237,41 @@
             </div>
         </div>
 
+        <h2 class="section-title" id="journey" data-aos="fade-up">学习生涯</h2>
+        
+        <div class="ornament-frame" data-aos="fade-up">
+            <div class="timeline">
+                
+                <div class="timeline-item" data-aos="fade-up" data-aos-delay="100">
+                    <div class="timeline-icon">✦</div>
+                    <span class="year-tag">2023 - 至今</span>
+                    <div class="timeline-content">
+                        <h3>步入大学殿堂 / [你的专业]</h3>
+                        <p>开始系统性地学习计算机科学，加入[某社团]，并在校级比赛中获得优异成绩。</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item" data-aos="fade-up" data-aos-delay="200">
+                    <div class="timeline-icon">✦</div>
+                    <span class="year-tag">2020 - 2023</span>
+                    <div class="timeline-content">
+                        <h3>高中时代 / 奋斗与沉淀</h3>
+                        <p>专注于理科基础学科的学习，培养了逻辑思维能力。期间获得了[某学科]竞赛奖项。</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item" data-aos="fade-up" data-aos-delay="300">
+                    <div class="timeline-icon">✦</div>
+                    <span class="year-tag">启蒙阶段</span>
+                    <div class="timeline-content">
+                        <h3>初识 [你的领域]</h3>
+                        <p>第一次接触到相关知识，便产生了浓厚的兴趣，开启了自学探索之路。</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
     </div>
 
     <footer data-aos="fade-in">
@@ -209,12 +280,11 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // 4. 初始化动画
         AOS.init({
-            offset: 120,    // 触发动画的距离（距离底部120px开始动）
-            duration: 1000, // 动画持续时间（1000毫秒 = 1秒）
-            easing: 'ease-out-cubic', // 动画曲线，这种曲线比较优雅
-            once: true,     // true表示动画只播放一次，往回滑不会再动（防止眼花）
+            offset: 100,
+            duration: 1000,
+            easing: 'ease-out-cubic',
+            once: true,
         });
     </script>
 </body>
