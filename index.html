@@ -3,35 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的主页 - 典雅版</title>
+    <title>Li Hang 的个人主页</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
     <style>
-        /* --- 全局定义 --- */
+        /* --- 样式部分 --- */
         :root {
-            --gold-color: #cba258; /* 核心金色 */
-            --gold-light: #ecdba8; /* 浅金色 */
-            --bg-cream: #fdfcf8;   /* 奶油色背景 */
-            --text-dark: #4a4238;  /* 深棕色文字 */
+            --gold-color: #cba258;
+            --gold-light: #ecdba8;
+            --bg-cream: #fdfcf8;
+            --text-dark: #4a4238;
             --section-spacing: 6rem;
         }
 
         body {
             margin: 0;
-            font-family: 'Noto Serif SC', 'Times New Roman', serif; /* 使用衬线体增加书卷气 */
+            font-family: 'Noto Serif SC', 'Times New Roman', serif;
             background-color: var(--bg-cream);
             color: var(--text-dark);
             background-image: 
                 radial-gradient(circle at 100% 0%, rgba(203, 162, 88, 0.05) 0%, transparent 20%),
-                radial-gradient(circle at 0% 100%, rgba(203, 162, 88, 0.05) 0%, transparent 20%); /* 模拟微妙的背景光晕 */
+                radial-gradient(circle at 0% 100%, rgba(203, 162, 88, 0.05) 0%, transparent 20%);
             line-height: 1.8;
+            overflow-x: hidden; /* 防止动画滑入时出现横向滚动条 */
         }
 
         h1, h2, h3 {
-            font-family: 'Cinzel Decorative', cursive, serif; /* 标题使用装饰性更强的字体 */
+            font-family: 'Cinzel Decorative', cursive, serif;
             font-weight: 700;
         }
 
-        /* --- 通用装饰框架类 --- */
+        /* 装饰框 */
         .ornament-frame {
             border: 3px solid transparent;
             border-image: linear-gradient(45deg, var(--gold-color), var(--gold-light), var(--gold-color)) 1;
@@ -39,30 +42,23 @@
             position: relative;
             background: #fff;
             box-shadow: 0 4px 20px rgba(203, 162, 88, 0.1);
+            margin-bottom: 2rem;
         }
-        /* 模拟四个角的装饰 */
-        .ornament-frame::before, .ornament-frame::after {
-            content: '❖'; /* 使用特殊符号模拟角标 */
-            position: absolute;
-            color: var(--gold-color);
-            font-size: 1.5rem;
-        }
-        .ornament-frame::before { top: -12px; left: -12px; }
-        .ornament-frame::after { bottom: -12px; right: -12px; }
+        .ornament-frame::before { content: '❖'; position: absolute; top: -12px; left: -12px; color: var(--gold-color); font-size: 1.5rem; background: #fff;}
+        .ornament-frame::after { content: '❖'; position: absolute; bottom: -12px; right: -12px; color: var(--gold-color); font-size: 1.5rem; background: #fff;}
 
-
-        /* --- 导航栏 --- */
+        /* 导航栏 */
         nav {
             display: flex;
             justify-content: center;
             padding: 1.5rem;
-            background: rgba(253, 252, 248, 0.9);
+            background: rgba(253, 252, 248, 0.95);
             border-bottom: 2px solid var(--gold-light);
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 100;
-            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
         }
         nav a {
             margin: 0 20px;
@@ -70,27 +66,14 @@
             color: var(--text-dark);
             font-weight: bold;
             font-size: 1.1rem;
-            position: relative;
             transition: color 0.3s;
         }
         nav a:hover { color: var(--gold-color); }
-        nav a::after {
-            content: '•';
-            position: absolute;
-            color: var(--gold-color);
-            bottom: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        nav a:hover::after { opacity: 1; }
 
-
-        /* --- Hero 首屏区域 --- */
+        /* 首屏 Hero */
         .hero {
-            /* 【重要】请在这里替换你的首屏大图 URL */
-            background-image: url('https://placehold.co/1920x1080/fdfcf8/cba258?text=Your+Elegant+Photo+Here');
+            /* 🔴【图片】替换首屏大图 */
+            background-image: url('https://placehold.co/1920x1080/fdfcf8/cba258?text=Li+Hang+Home'); 
             background-size: cover;
             background-position: center;
             height: 100vh;
@@ -101,133 +84,71 @@
             position: relative;
             margin-bottom: var(--section-spacing);
         }
-        /* 在图片上叠加一层金色蒙版，增加氛围 */
-        .hero::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(to bottom, rgba(253, 252, 248, 0.2), rgba(253, 252, 248, 0.8));
-            pointer-events: none;
-        }
+        /* 增加视差滚动效果 */
+        .hero { background-attachment: fixed; }
 
         .hero-content {
             z-index: 1;
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.85);
             padding: 3rem 5rem;
             border: 2px solid var(--gold-color);
-            /* 双重边框效果 */
             outline: 4px solid rgba(255, 255, 255, 0.8);
             box-shadow: 0 0 0 6px var(--gold-light);
         }
+        .hero h1 { font-size: 3.5rem; margin: 0; color: var(--gold-color); }
 
-        .hero h1 {
-            font-size: 3.5rem;
-            margin: 0;
-            color: var(--gold-color);
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-        }
-        .hero p { font-size: 1.5rem; margin-top: 1rem; color: var(--text-dark); }
-
-
-        /* --- 区域通用样式 --- */
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
+        .container { max-width: 900px; margin: 0 auto; padding: 0 2rem; }
+        
         .section-title {
             text-align: center;
             font-size: 2.5rem;
             color: var(--gold-color);
-            margin-bottom: 3rem;
-            position: relative;
+            margin: 4rem 0 3rem;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        /* 标题两侧的装饰线 */
         .section-title::before, .section-title::after {
-            content: '';
-            height: 2px;
-            width: 50px;
-            background: var(--gold-color);
-            margin: 0 20px;
+            content: ''; height: 2px; width: 50px; background: var(--gold-color); margin: 0 20px;
         }
 
-        /* --- 爱好部分 (图文卡片) --- */
-        .hobby-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 3rem;
-            margin-bottom: var(--section-spacing);
+        /* 爱好展示区域 */
+        .hobby-item {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 4rem;
         }
-        .hobby-card {
-            text-align: center;
-        }
-        .hobby-img-frame {
-            /* 【重要】替换爱好图片 */
-            width: 100%;
-            height: 200px;
+        .hobby-item:nth-child(even) { flex-direction: row-reverse; }
+
+        .hobby-img {
+            flex: 1;
+            height: 300px;
             object-fit: cover;
-            border: 3px double var(--gold-color); /* 双线金色边框 */
+            border: 3px double var(--gold-color);
             padding: 5px;
             background: #fff;
+            transition: transform 0.5s ease;
         }
-        .hobby-card h3 { color: var(--gold-color); margin-top: 1.5rem; }
+        /* 鼠标悬停时图片微微放大 */
+        .hobby-img:hover { transform: scale(1.03); }
 
+        .hobby-text { flex: 1; }
+        .hobby-text h3 { font-size: 1.8rem; color: var(--gold-color); margin-bottom: 1rem; }
 
-        /* --- 学习生涯 (典雅时间轴) --- */
-        .timeline-section { margin-bottom: var(--section-spacing); }
-        .timeline {
-            border-left: 3px solid var(--gold-light);
-            padding-left: 30px;
-            margin-left: 20px;
-        }
-        .timeline-item {
-            position: relative;
-            margin-bottom: 40px;
-        }
-        /* 时间轴节点装饰 */
-        .timeline-item::before {
-            content: '✦'; /* 使用星形符号代替圆点 */
-            position: absolute;
-            left: -39px;
-            top: 0px;
-            color: var(--gold-color);
-            font-size: 1.2rem;
-            background: var(--bg-cream);
-            padding: 2px;
-        }
-        .year-tag {
-            display: inline-block;
-            background: var(--gold-color);
-            color: #fff;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .timeline-content h3 { margin: 0; color: var(--text-dark); }
-        .timeline-content p { margin-top: 10px; }
-
-
-        /* --- 页脚 --- */
         footer {
             text-align: center;
             padding: 3rem;
             margin-top: var(--section-spacing);
             border-top: 1px solid var(--gold-light);
             color: var(--gold-color);
-            background-image: linear-gradient(to top, rgba(203, 162, 88, 0.05), transparent);
         }
 
-        /* 移动端适配 */
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.5rem; }
+            .hobby-item { flex-direction: column !important; text-align: center; }
+            .hobby-img { width: 100%; height: auto; }
             .hero-content { padding: 2rem; width: 80%; }
-            .section-title { font-size: 2rem; }
-            .section-title::before, .section-title::after { width: 30px; }
         }
     </style>
 </head>
@@ -236,73 +157,65 @@
     <nav>
         <a href="#about">关于我</a>
         <a href="#hobbies">我的爱好</a>
-        <a href="#journey">学习生涯</a>
     </nav>
 
     <header class="hero" id="about">
-        <div class="hero-content">
-            <h1>[你的名字]</h1>
-            <p>———— 记录时光与成长的篇章 ————</p>
+        <div class="hero-content" data-aos="zoom-in" data-aos-duration="1500">
+            <h1>Li Hang</h1>
+            <p>Welcome to my personal world.</p>
         </div>
     </header>
 
     <div class="container">
-        <div class="ornament-frame" style="text-align: center; margin-bottom: var(--section-spacing);">
-            <h2 style="color: var(--gold-color); margin-top: 0;">你好，访客</h2>
-            <p style="max-width: 700px; margin: 0 auto;">
-                这里写一段比较文艺的自我介绍。例如：我是一名在数字世界漫步的旅人，钟情于代码的逻辑之美，也沉醉于影像的光影变幻。在这个小小的角落，珍藏着我的热爱与足迹。
-            </p>
-            <p style="margin-top: 20px; font-weight: bold; color: var(--gold-color);">
-                📍 现居 [城市] &nbsp; | &nbsp; 🏫 主修 [专业]
+        
+        <div class="ornament-frame" style="text-align: center;" data-aos="fade-up" data-aos-duration="1000">
+            <h2 style="color: var(--gold-color);">关于我</h2>
+            <p>
+                这里是 Li Hang 的个人空间。我喜欢...（请在此处粘贴你的简介）
             </p>
         </div>
 
-        <h2 class="section-title" id="hobbies">珍藏的爱好</h2>
-        <div class="hobby-grid">
-            <div class="hobby-card">
-                <img src="https://placehold.co/400x300/eaddc5/cba258?text=Photo+1" alt="摄影" class="hobby-img-frame">
-                <h3>光影记录 (摄影)</h3>
-                <p>捕捉日常生活中不经意的美好瞬间，偏爱胶片质感的色彩。</p>
-            </div>
-            <div class="hobby-card">
-                <img src="https://placehold.co/400x300/eaddc5/cba258?text=Photo+2" alt="阅读" class="hobby-img-frame">
-                <h3>静谧阅读</h3>
-                <p>沉浸在经典文学构筑的世界中，最近在研读欧洲历史。</p>
+        <h2 class="section-title" id="hobbies" data-aos="fade-up">我的爱好</h2>
+        
+        <div class="hobby-item">
+            <img src="https://placehold.co/500x350/eaddc5/cba258?text=Hobby+1" class="hobby-img" data-aos="fade-right">
+            <div class="hobby-text" data-aos="fade-left">
+                <h3>[爱好标题1]</h3>
+                <p>这里粘贴你 Google Site 上第一个爱好的详细描述文字...</p>
             </div>
         </div>
 
-        <h2 class="section-title" id="journey">成长轨迹</h2>
-        <div class="timeline-section ornament-frame">
-            <div class="timeline">
-                <div class="timeline-item">
-                    <span class="year-tag">2023 - 至今</span>
-                    <div class="timeline-content">
-                        <h3>步入大学殿堂 / [你的专业]</h3>
-                        <p>开始系统性地学习专业知识，并在校级比赛中崭露头角。担任了[某社团]的负责人。</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <span class="year-tag">2020 - 2023</span>
-                    <div class="timeline-content">
-                        <h3>高中生涯 / 沉淀与探索</h3>
-                        <p>专注于理科基础学科的学习，培养了逻辑思维能力。期间获得了物理竞赛奖项。</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <span class="year-tag">启蒙</span>
-                    <div class="timeline-content">
-                        <h3>初识 [你擅长的领域]</h3>
-                        <p>第一次接触到相关知识，便产生了浓厚的兴趣，开启了自学之路。</p>
-                    </div>
-                </div>
+        <div class="hobby-item">
+            <img src="https://placehold.co/500x350/eaddc5/cba258?text=Hobby+2" class="hobby-img" data-aos="fade-left">
+            <div class="hobby-text" data-aos="fade-right">
+                <h3>[爱好标题2]</h3>
+                <p>这里粘贴你 Google Site 上第二个爱好的详细描述文字...</p>
+            </div>
+        </div>
+
+        <div class="hobby-item">
+            <img src="https://placehold.co/500x350/eaddc5/cba258?text=Hobby+3" class="hobby-img" data-aos="fade-right">
+            <div class="hobby-text" data-aos="fade-left">
+                <h3>[爱好标题3]</h3>
+                <p>这里粘贴你 Google Site 上第三个爱好的详细描述文字...</p>
             </div>
         </div>
 
     </div>
 
-    <footer>
-        <p>✦ © 2025 陈立航 ✦</p>
+    <footer data-aos="fade-in">
+        <p>✦ © 2024 Li Hang ✦</p>
     </footer>
 
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // 4. 初始化动画
+        AOS.init({
+            offset: 120,    // 触发动画的距离（距离底部120px开始动）
+            duration: 1000, // 动画持续时间（1000毫秒 = 1秒）
+            easing: 'ease-out-cubic', // 动画曲线，这种曲线比较优雅
+            once: true,     // true表示动画只播放一次，往回滑不会再动（防止眼花）
+        });
+    </script>
 </body>
 </html>
