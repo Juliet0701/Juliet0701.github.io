@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Li Hang - 典雅长信纸版</title>
+    <title>Li Hang - 典雅动态背景版</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -18,56 +18,72 @@
             --sidebar-width: 80px; 
         }
 
-        /* --- 🔥 1. Body 设置 (作为定位基准) --- */
+        /* --- 🔥 新增：动态斜纹背景样式 --- */
+        .animated-bg {
+            position: fixed; /* 背景固定，让它充满整个窗口 */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* 放在最底层，不挡住内容 */
+            
+            /* 粉色和米色交替的柔和条纹 */
+            background: repeating-linear-gradient(
+                45deg,
+                var(--bg-cream),
+                var(--bg-cream) 20px, /* 米色宽 20px */
+                #fff0f3 20px,         /* 极淡的粉色开始 */
+                #fff0f3 40px          /* 极淡的粉色结束，宽 20px */
+            );
+            
+            /* 放大背景尺寸，为了让它动起来时看不出边界 */
+            background-size: 200% 200%;
+            
+            /* 激活动画：60秒一次循环，极慢速流动 */
+            animation: gradientFlow 60s linear infinite;
+        }
+
+        /* 背景流动的动画定义 */
+        @keyframes gradientFlow {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+
+        /* --- 1. Body 设置 --- */
         body {
             margin: 0;
             font-family: 'Noto Serif SC', serif;
-            background-color: var(--bg-cream);
+            /* 背景色现在由 .animated-bg 接管，这里设透明或保留作为兜底 */
+            background-color: var(--bg-cream); 
             color: var(--text-dark);
             
-            /* 关键修改：设置为相对定位，让里面的相框能根据网页总高度来拉伸 */
             position: relative; 
-            
-            /* 保证最小高度也是一屏幕，防止内容太少时边框塌陷 */
             min-height: 100vh; 
             
-            background-image: 
-                radial-gradient(#e85a71 1px, transparent 1px),
-                radial-gradient(#e85a71 1px, transparent 1px);
-            background-size: 40px 40px;
-            background-position: 0 0, 20px 20px;
-            background-blend-mode: overlay; 
+            /* 原来的静态花纹背景可以删掉了，因为有了动态背景 */
+            /* background-image: ... (已移除) */
+            
             overflow-x: hidden;
 
-            /* 内边距：给边框留位置，防止内容贴到边框上 */
-            /* 上:40px | 右:120px | 下:40px | 左:40px */
+            /* 内边距 */
             padding: 40px 120px 40px 40px; 
             box-sizing: border-box;
         }
 
-        /* --- 🔥 2. 双重相框 (改为绝对定位 Absolute) --- */
-        /* 这里的绝对定位会让它“贴”在网页文档上，而不是屏幕上 */
+        /* --- 2. 双重相框 (文档模式 - Absolute) --- */
         .page-frame {
-            position: absolute; /* 👈 核心修改：从 fixed 改为 absolute */
+            position: absolute;
             top: 0;
             left: 0;
-            
-            /* 让高度自动拉伸，覆盖整个网页的长度 */
-            bottom: 0; 
-            
-            /* 宽度仍然是减去侧边栏的宽度 */
+            bottom: 0;
             width: calc(100% - var(--sidebar-width)); 
-            
-            /* 外层粉色边框 */
             border: 15px solid var(--main-red);
-            
             background: transparent;
             pointer-events: none; 
             z-index: 990; 
             box-sizing: border-box;
         }
 
-        /* 内层细线 */
         .page-frame::after {
             content: '';
             position: absolute;
@@ -79,8 +95,7 @@
             opacity: 0.6;
         }
 
-        /* --- 3. 右侧垂直导航栏 (保持 Fixed 不动) --- */
-        /* 导航栏通常需要保持在屏幕上方便点击，所以我保持了 fixed */
+        /* --- 3. 右侧垂直导航栏 --- */
         .side-nav {
             position: fixed; 
             top: 0;
@@ -103,7 +118,6 @@
             box-sizing: border-box;
         }
         
-        /* 菜单容器 */
         .nav-links { 
             display: flex; 
             flex-direction: column; 
@@ -129,7 +143,6 @@
             position: relative;
         }
         
-        /* 选中时的白线特效 */
         .side-nav a.menu-link::after {
             content: '';
             position: absolute;
@@ -151,7 +164,6 @@
         }
         .side-nav a.menu-link.active::after { height: 100%; }
 
-        /* 底部社交图标 */
         .social-links {
             display: flex;
             flex-direction: column;
@@ -216,7 +228,6 @@
             border-left: none; 
             margin-left: 0; 
         }
-        /* 中间的红线 */
         .timeline-container::after {
             content: '';
             position: absolute;
@@ -295,21 +306,13 @@
         
         /* --- 📱 移动端适配 --- */
         @media (max-width: 768px) {
-            /* 手机上隐藏厚边框，太占地方 */
             .page-frame { display: none; }
-            
-            body { 
-                /* 恢复手机上的边距 */
-                padding: 60px 20px 20px 20px; 
-            }
-
+            body { padding: 60px 20px 20px 20px; }
             .grid-section { grid-template-columns: 1fr; }
             .side-nav { width: 100%; height: 60px; flex-direction: row; bottom: auto; border-left: none; border-bottom: 2px solid #fff; padding: 0 20px; }
             .nav-links { flex-direction: row; gap: 1rem; margin: 0; }
             .side-nav a.menu-link { writing-mode: horizontal-tb; font-size: 0.9rem; }
             .social-links { flex-direction: row; gap: 15px; margin-left: auto; }
-            
-            /* 时间轴手机适配 */
             .timeline-container::after { left: 30px; }
             .timeline-row { flex-direction: column; align-items: flex-start; margin-left: 30px; padding-left: 30px; margin-bottom: 50px; }
             .timeline-image-box, .timeline-content-box { width: 100%; padding: 0; text-align: left; }
@@ -321,6 +324,8 @@
     </style>
 </head>
 <body>
+
+    <div class="animated-bg"></div>
 
     <div class="page-frame"></div>
 
@@ -355,7 +360,7 @@
             <div class="section-header" data-aos="fade-up">
                 <h2>Introduction</h2>
             </div>
-            <div style="background: #fff; padding: 3rem; border-left: 5px solid var(--main-red);" data-aos="fade-left">
+            <div style="background: rgba(255, 255, 255, 0.95); padding: 3rem; border-left: 5px solid var(--main-red);" data-aos="fade-left">
                 <p style="font-size: 1.1rem; line-height: 2;">
                     你好，这里是 Li Hang。
                     <br>
@@ -489,7 +494,6 @@
     </script>
 
     <script>
-        // 滚动监听脚本 (Scroll Spy)
         const sections = document.querySelectorAll('section[id]');
         const navLinks = document.querySelectorAll('.side-nav .menu-link');
     
@@ -500,7 +504,6 @@
                 const sectionTop = section.offsetTop;
                 const sectionHeight = section.clientHeight;
                 
-                // 当页面滚动到板块上方一定距离时，视为激活
                 if (pageYOffset >= (sectionTop - 300)) {
                     current = section.getAttribute('id');
                 }
