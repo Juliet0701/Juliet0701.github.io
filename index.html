@@ -83,14 +83,41 @@
             opacity: 0.8;
             padding: 10px 0;
             border-right: 2px solid transparent;
+            position: relative;
+        }
+        .side-nav a.menu-link::after {
+            content: '';
+            position: absolute;
+            
+            /* 位置：放在文字的“右侧” (视觉上的右边) */
+            right: -12px; 
+            top: 0;
+            
+            /* 形状：一条竖线 */
+            width: 2px; 
+            height: 0%; /* 默认高度是0，隐藏起来 */
+            
+            /* 颜色与发光 */
+            background-color: #fff;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.9); /* 白色的光晕 */
+            
+            /* 动画：高度变化 */
+            transition: height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            
+            /* 细节：让线居中一点（可选） */
+            bottom: 0;
+            margin: auto 0;
         }
         .side-nav a.menu-link:hover { opacity: 1; transform: scale(1.1); text-shadow: 0 0 5px rgba(255,255,255,0.8); }
         .side-nav a.menu-link.active {
-            color: var(--gold-accent) !important; /* 强制变金色 */
-            transform: scale(1.3); /* 比普通悬停放得更大 */
-            text-shadow: 0 0 15px rgba(203, 162, 88, 1), 0 0 5px #fff; /* 双重发光效果 */
+            color: #fff !important;
             opacity: 1;
-            letter-spacing: 5px; /* 字间距拉大一点，更有张力 */
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* 文字本身加一点点柔光 */
+        }
+        
+        /* 当激活时，让线的高度变成 100% */
+        .side-nav a.menu-link.active::after {
+            height: 100%;
         }
 
         /* 🔥新加：底部社交图标容器 */
