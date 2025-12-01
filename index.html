@@ -6,6 +6,7 @@
     <title>Li Hang - 典雅侧边栏版</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
     <style>
         /* --- 1. 配色方案 --- */
@@ -32,7 +33,7 @@
             overflow-x: hidden;
         }
 
-        /* --- 2. 右侧垂直导航栏 --- */
+        /* --- 2. 右侧垂直导航栏 (布局升级) --- */
         .side-nav {
             position: fixed;
             top: 0;
@@ -43,25 +44,35 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            /* 🔥关键改动：space-between 让内容两端对齐，中间留白 */
+            justify-content: space-between; 
             z-index: 1000;
             box-shadow: -2px 0 10px rgba(0,0,0,0.1);
             border-left: 2px solid #fff;
+            padding-bottom: 2rem; /* 底部留点空隙给图标 */
+            padding-top: 2rem;    /* 顶部也留点空隙 */
+            box-sizing: border-box; /* 确保padding不会撑大宽度 */
         }
 
-        .side-nav::before, .side-nav::after {
-            content: ''; width: 1px; height: 100px; background: rgba(255,255,255,0.5); margin: 20px 0;
+        .side-nav::before {
+            content: ''; width: 1px; height: 50px; background: rgba(255,255,255,0.5); 
         }
 
-        .nav-links { display: flex; flex-direction: column; gap: 3rem; }
+        /* 菜单容器：使用 margin: auto 让它自动在中间垂直居中 */
+        .nav-links { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 3rem; 
+            margin: auto 0; /* 上下自动居中 */
+        }
 
-        .side-nav a {
+        .side-nav a.menu-link {
             text-decoration: none;
             color: #fff;
             font-family: 'Cinzel Decorative', serif;
             font-size: 1.1rem;
             font-weight: bold;
-            writing-mode: vertical-rl; /* 竖排文字 */
+            writing-mode: vertical-rl;
             text-orientation: mixed;
             letter-spacing: 3px;
             transition: all 0.3s;
@@ -69,9 +80,31 @@
             padding: 10px 0;
             border-right: 2px solid transparent;
         }
-        .side-nav a:hover { opacity: 1; transform: scale(1.1); text-shadow: 0 0 5px rgba(255,255,255,0.8); }
+        .side-nav a.menu-link:hover { opacity: 1; transform: scale(1.1); text-shadow: 0 0 5px rgba(255,255,255,0.8); }
 
-        /* --- 3. 布局调整 --- */
+        /* 🔥新加：底部社交图标容器 */
+        .social-links {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .social-btn {
+            color: #fff;
+            font-size: 1.5rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            opacity: 0.7;
+        }
+        .social-btn:hover {
+            opacity: 1;
+            transform: scale(1.2) rotate(10deg); /* 悬停时稍微放大并旋转一点 */
+            color: var(--gold-accent); /* 悬停变金色 */
+        }
+
+
+        /* --- 3. 内容布局 --- */
         .container { max-width: 1000px; margin: 0 auto; padding: 4rem 2rem; }
 
         .section-header { text-align: center; margin-bottom: 4rem; position: relative; padding: 2rem 0; }
@@ -90,77 +123,33 @@
         }
         .hero h1 { font-size: 3.5rem; margin: 0; color: var(--main-red); }
 
-        /* --- 🔥九宫格布局 (3x3) --- */
-        .grid-section {
-            display: grid;
-            /* 强制分为3列 */
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 1.5rem;
-        }
-        .card {
-            background: #fff;
-            padding: 1rem;
-            border: 1px solid var(--gold-accent);
-            text-align: center;
-            transition: transform 0.3s;
-        }
+        /* 九宫格 */
+        .grid-section { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+        .card { background: #fff; padding: 1rem; border: 1px solid var(--gold-accent); text-align: center; transition: transform 0.3s; }
         .card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .card img { width: 100%; height: 180px; object-fit: cover; margin-bottom: 10px; }
         .card h3 { color: var(--main-red); margin: 0.5rem 0; font-size: 1.1rem; }
         .card p { font-size: 0.85rem; color: #888; margin: 0; }
 
-        /* --- 移动端九宫格适配 --- */
-        @media (max-width: 768px) {
-            .grid-section {
-                /* 手机上变成1列，不然太挤 */
-                grid-template-columns: 1fr; 
-            }
-            .hero h1 { font-size: 2.5rem; }
-        }
-
-        /* --- 生涯时间轴 --- */
-        .timeline-container {
-            border-left: 2px solid var(--main-red);
-            margin-left: 50%;
-            padding-bottom: 50px;
-        }
-        .timeline-box {
-            padding-left: 40px;
-            position: relative;
-            margin-bottom: 60px;
-        }
-        /* 时间轴上的点 */
-        .timeline-dot {
-            position: absolute;
-            left: -11px; /* 线宽2px，点宽20px，(20-2)/2 + 2 = 11 */
-            top: 0;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #fff;
-            border: 4px solid var(--main-red);
-        }
-        /* 当前状态的点（实心） */
+        /* 时间轴 */
+        .timeline-container { border-left: 2px solid var(--main-red); margin-left: 50%; padding-bottom: 50px; }
+        .timeline-box { padding-left: 40px; position: relative; margin-bottom: 60px; }
+        .timeline-dot { position: absolute; left: -11px; top: 0; width: 20px; height: 20px; border-radius: 50%; background: #fff; border: 4px solid var(--main-red); }
         .timeline-dot.current { background: var(--main-red); }
-
-        .year-badge {
-            background: var(--main-red);
-            color: white;
-            padding: 3px 12px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            display: inline-block;
-            margin-bottom: 10px;
-        }
+        .year-badge { background: var(--main-red); color: white; padding: 3px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: bold; display: inline-block; margin-bottom: 10px; }
         
+        /* 移动端适配 */
         @media (max-width: 768px) {
             body { padding-right: 0; padding-top: 60px; }
-            .side-nav { width: 100%; height: 60px; flex-direction: row; bottom: auto; border-left: none; border-bottom: 2px solid #fff; }
-            .side-nav::before, .side-nav::after { display: none; }
-            .nav-links { flex-direction: row; gap: 1rem; }
-            .side-nav a { writing-mode: horizontal-tb; font-size: 0.9rem; }
-            /* 手机端时间轴靠左 */
+            .grid-section { grid-template-columns: 1fr; }
+            .side-nav { width: 100%; height: 60px; flex-direction: row; bottom: auto; border-left: none; border-bottom: 2px solid #fff; padding: 0 20px; }
+            .side-nav::before { display: none; }
+            .nav-links { flex-direction: row; gap: 1rem; margin: 0; /* 手机端取消自动边距 */ }
+            .side-nav a.menu-link { writing-mode: horizontal-tb; font-size: 0.9rem; }
+            
+            /* 手机端图标放右边 */
+            .social-links { flex-direction: row; gap: 15px; margin-left: auto; }
+            .social-btn { font-size: 1.2rem; }
             .timeline-container { margin-left: 20px; }
         }
     </style>
@@ -169,15 +158,23 @@
 
     <nav class="side-nav">
         <div class="nav-links">
-            <a href="#home">Home</a>
-            <a href="#about">About</a>
-            <a href="#hobby">Hobby</a>
-            <a href="#story">Story</a>
+            <a href="#home" class="menu-link">Home</a>
+            <a href="#about" class="menu-link">About</a>
+            <a href="#hobby" class="menu-link">Hobby</a>
+            <a href="#story" class="menu-link">Story</a>
+        </div>
+
+        <div class="social-links">
+            <a href="https://facebook.com/你的账号" target="_blank" class="social-btn">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://instagram.com/你的账号" target="_blank" class="social-btn">
+                <i class="fab fa-instagram"></i>
+            </a>
         </div>
     </nav>
 
     <div class="container">
-
         <section id="home" class="hero">
             <div class="hero-card" data-aos="zoom-out" data-aos-duration="1200">
                 <h1>Li Hang</h1>
@@ -220,7 +217,6 @@
                     <h3>阅读</h3>
                     <p>灵魂栖息</p>
                 </div>
-
                 <div class="card" data-aos="fade-up" data-aos-delay="300">
                     <img src="https://placehold.co/300x200/fcefe9/e85a71?text=4+Movie">
                     <h3>电影</h3>
@@ -236,7 +232,6 @@
                     <h3>旅行</h3>
                     <p>丈量土地</p>
                 </div>
-
                 <div class="card" data-aos="fade-up" data-aos-delay="600">
                     <img src="https://placehold.co/300x200/fcefe9/e85a71?text=7+Game">
                     <h3>游戏</h3>
@@ -259,40 +254,33 @@
             <div class="section-header" data-aos="fade-up">
                 <h2>My Story</h2>
             </div>
-            
             <div class="timeline-container">
-                
                 <div class="timeline-box" data-aos="fade-left" data-aos-delay="0">
                     <div class="timeline-dot current"></div>
                     <span class="year-badge">2023 - NOW</span>
                     <h3 style="margin-top: 10px;">大学篇：自由与探索</h3>
                     <p>主修计算机科学。开始用代码构建自己的想法，遇见了志同道合的伙伴，加入了社团，正在探索未来的无限可能。</p>
                 </div>
-
                 <div class="timeline-box" data-aos="fade-left" data-aos-delay="100">
                     <div class="timeline-dot"></div>
                     <span class="year-badge">2020 - 2023</span>
                     <h3 style="margin-top: 10px;">高中篇：奋斗的青春</h3>
                     <p>那是书桌上堆满试卷的日子。虽然辛苦，但每晚的夕阳和操场上的奔跑，都是最珍贵的回忆。</p>
                 </div>
-
                 <div class="timeline-box" data-aos="fade-left" data-aos-delay="200">
                     <div class="timeline-dot"></div>
                     <span class="year-badge">2011 - 2020</span>
                     <h3 style="margin-top: 10px;">少年篇：好奇的萌芽</h3>
                     <p>第一次接触电脑，第一次读完一本长篇小说。在这个阶段，我开始对这个世界产生了无数个“为什么”。</p>
                 </div>
-
                 <div class="timeline-box" data-aos="fade-left" data-aos-delay="300">
                     <div class="timeline-dot"></div>
                     <span class="year-badge">THE BEGINNING</span>
                     <h3 style="margin-top: 10px;">幼年篇：梦的起点</h3>
                     <p>无忧无虑的时光。那时的世界很小，只有家和幼儿园的滑滑梯，但那里的快乐很纯粹。</p>
                 </div>
-
             </div>
         </section>
-
     </div>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -301,8 +289,8 @@
             offset: 120,
             duration: 800,
             easing: 'ease-out-quad',
-            once: false,  // 往回滑也会重新触发动画
-            mirror: true, // 开启镜像模式
+            once: false, 
+            mirror: true, 
         });
     </script>
 </body>
