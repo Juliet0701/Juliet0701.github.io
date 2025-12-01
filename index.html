@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Li Hang - 典雅图文全包围版</title>
+    <title>Li Hang - 典雅悬浮相框版</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -18,7 +18,7 @@
             --sidebar-width: 80px; 
         }
 
-        /* --- 🔥 核心改动：Body 全包围结构 🔥 --- */
+        /* --- 🔥 1. Body 基础设置 (只负责背景和滚动) --- */
         body {
             margin: 0;
             font-family: 'Noto Serif SC', serif;
@@ -34,42 +34,42 @@
             background-blend-mode: overlay; 
             overflow-x: hidden;
 
-            /* ✨ 1. 左侧实体深色边框 (20px) */
-            border-left: 20px solid var(--text-dark);
-            
-            /* ✨ 2. 页面内边距布局 */
-            /* 上:20px | 右:80px(侧边栏) | 下:20px | 左:0 */
-            padding: 20px var(--sidebar-width) 20px 0;
-            
-            /* 确保边框和padding算在总宽度内 */
-            box-sizing: border-box; 
+            /* ❗关键：给 body 加 padding，防止内容被固定的边框挡住 */
+            /* 上右下左：给四周留出呼吸空间 */
+            /* 右边留出 80px(侧边栏) + 20px(边框) + 20px(间隙) = 120px */
+            padding: 40px 120px 40px 40px; 
+            box-sizing: border-box;
         }
 
-        /* ✨ 3. 顶部装饰条 (填补左边框和右侧边栏之间的空隙) */
-        body::before {
-            content: '';
-            position: fixed;
+        /* --- 🔥 2. 新增：悬浮相框 (核心改动) --- */
+        .page-frame {
+            position: fixed; /* 永远固定在屏幕上，不动 */
             top: 0;
-            left: 20px; /* 从左边框右侧开始 */
-            width: calc(100% - 20px - var(--sidebar-width)); /* 计算剩余宽度 */
-            height: 20px; 
-            background-color: var(--text-dark);
-            z-index: 999; 
-        }
-
-        /* ✨ 4. 底部装饰条 */
-        body::after {
-            content: '';
-            position: fixed;
+            left: 0;
             bottom: 0;
-            left: 20px; 
-            width: calc(100% - 20px - var(--sidebar-width));
-            height: 20px; 
-            background-color: var(--text-dark);
-            z-index: 999;
+            
+            /* 宽度 = 屏幕总宽 - 侧边栏宽度 */
+            /* 这样右边的边框就会刚好贴在侧边栏的左边 */
+            width: calc(100% - var(--sidebar-width)); 
+            
+            /* 生成 20px 厚的深色边框 */
+            border: 20px solid var(--text-dark);
+            
+            /* 让中间变透明，这样才能看到网页内容 */
+            background: transparent;
+            
+            /* ❗非常重要：让鼠标点击能穿透这个相框 */
+            /* 否则你没法点击页面里的链接 */
+            pointer-events: none; 
+            
+            /* 层级：比内容高，但比侧边栏低 */
+            z-index: 990; 
+            
+            /* 确保边框包含在尺寸内 */
+            box-sizing: border-box;
         }
 
-        /* --- 2. 右侧垂直导航栏 --- */
+        /* --- 3. 右侧垂直导航栏 --- */
         .side-nav {
             position: fixed;
             top: 0;
@@ -165,12 +165,12 @@
             color: var(--gold-accent);
         }
 
-        /* --- 3. 内容布局 --- */
+        /* --- 4. 内容布局 --- */
         .container { 
             max-width: 1000px; 
             margin: 0 auto; 
-            /* 调整内边距，给底部横条留出呼吸空间 */
-            padding: 4rem 2rem 2rem 2rem; 
+            /* 取消 container 的 padding，由 body 统一控制 */
+            padding: 0; 
         }
 
         .section-header { text-align: center; margin-bottom: 4rem; position: relative; padding: 2rem 0; }
@@ -283,14 +283,14 @@
         .timeline-content-box h3 { margin-top: 0; color: var(--text-dark); font-size: 1.5rem;}
         .timeline-content-box p { color: #777; line-height: 1.8; }
         
-        /* --- 📱 移动端适配 (包含全包围边框的处理) --- */
+        /* --- 📱 移动端适配 --- */
         @media (max-width: 768px) {
+            /* 手机上隐藏厚边框 */
+            .page-frame { display: none; }
+            
             body { 
-                border-left: none; /* 手机上去掉左侧厚边框 */
-                padding: 60px 0 20px 0; /* 重新调整内边距 */
+                padding: 60px 20px 20px 20px; 
             }
-            body::before { display: none; } /* 手机上隐藏顶部条 */
-            body::after { left: 0; width: 100%; height: 15px; } /* 底部条变细且占满 */
 
             .grid-section { grid-template-columns: 1fr; }
             .side-nav { width: 100%; height: 60px; flex-direction: row; bottom: auto; border-left: none; border-bottom: 2px solid #fff; padding: 0 20px; }
@@ -310,6 +310,8 @@
     </style>
 </head>
 <body>
+
+    <div class="page-frame"></div>
 
     <nav class="side-nav">
         <div class="nav-links">
