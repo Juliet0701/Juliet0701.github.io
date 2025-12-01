@@ -39,44 +39,48 @@
             top: 0;
             right: 0;
             width: var(--sidebar-width);
-            height: 100vh;
+            height: 100vh; /* 占满屏幕高度 */
             background-color: var(--main-red);
+            
+            /* 布局模式 */
             display: flex;
             flex-direction: column;
             align-items: center;
-            
-            /* 👇 改动1：改为 flex-start，让内容从顶部开始排，而不是分散对齐 */
-            justify-content: flex-start; 
+            justify-content: flex-start; /* 内容从顶部开始排 */
             
             z-index: 1000;
             box-shadow: -2px 0 10px rgba(0,0,0,0.1);
             border-left: 2px solid #fff;
             
-            /* 调整上下的安全距离 */
-            padding-top: 3rem;   
-            padding-bottom: 2rem; 
-            box-sizing: border-box;
+            /* 👇 调整1：减小顶部和底部的留白，防止挤压内容 */
+            padding-top: 30px;   
+            padding-bottom: 30px; 
+            box-sizing: border-box; /* 关键：防止padding撑大盒子 */
         }
-
+        
         /* 顶部的装饰线 */
         .side-nav::before {
             content: ''; 
             width: 1px; 
             height: 60px; /* 线条长度 */
             background: rgba(255,255,255,0.5); 
-            flex-shrink: 0; /* 防止线条被压缩 */
+            flex-shrink: 0; /* 禁止线条被压缩 */
+            display: block;
         }
-
-        /* 菜单容器：使用 margin: auto 让它自动在中间垂直居中 */
+        
+        /* 菜单容器 */
         .nav-links { 
             display: flex; 
             flex-direction: column; 
-            gap: 3rem; 
             
-            /* 👇 改动2：用 margin-top 控制它离顶部线条的距离 */
-            /* 如果觉得还不够靠上，就把 3rem 改成 2rem */
-            margin-top: 3rem; 
-            margin-bottom: 0; 
+            /* 👇 调整2：把间距从 3rem 改小到 2.5rem，让菜单紧凑点 */
+            gap: 2.5rem; 
+            
+            /* 👇 调整3：大大减小这里！让 HOME 紧贴着上面的线条 */
+            margin-top: 20px; 
+            
+            width: 100%;
+            align-items: center;
         }
 
         .side-nav a.menu-link {
@@ -100,21 +104,23 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            gap: 12px; /* 图标之间的距离 */
             
-            /* 👇 改动3：margin-top: auto 会自动把这个容器推到最底部 */
+            /* 👇 调整4：这个属性会自动把图标“推”到最下面，但不会推出去 */
             margin-top: auto; 
             
-            /* 👇 改动4：把 gap 从 15px 改为 8px，让两个图标靠得更近 */
-            gap: 8px; 
+            /* 确保图标可见 */
+            z-index: 1001; 
         }
-
-        /* 👇 修改点 3：明显缩小图标尺寸 */
+        
+        /* 图标按钮样式 */
         .social-btn {
             color: #fff;
-            font-size: 1.1rem; /* 从 1.5rem 改为 1.1rem，更加精致 */
+            font-size: 1.1rem; /* 图标大小 */
             text-decoration: none;
             transition: all 0.3s;
-            opacity: 0.8; /*稍微增加一点透明度，不那么突兀*/
+            opacity: 0.8;
+            display: block; /* 确保它占位置 */
         }
         
         .social-btn:hover {
