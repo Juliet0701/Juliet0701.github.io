@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Li Hang - 典雅侧边栏版</title>
+    <title>Li Hang - 典雅图文时间轴版</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -33,7 +33,7 @@
             overflow-x: hidden;
         }
 
-        /* --- 2. 右侧垂直导航栏 (布局升级) --- */
+        /* --- 2. 右侧垂直导航栏 --- */
         .side-nav {
             position: fixed;
             top: 0;
@@ -51,7 +51,6 @@
             box-shadow: -2px 0 10px rgba(0,0,0,0.1);
             border-left: 2px solid #fff;
             
-            /* 👇 改动1：加大了顶部内边距，替代原本横线的位置，让HOME不要顶到头 */
             padding-top: 60px;   
             padding-bottom: 30px; 
             box-sizing: border-box;
@@ -62,10 +61,7 @@
             display: flex; 
             flex-direction: column; 
             gap: 2.5rem; 
-            
-            /* 👇 改动2：因为没有横线了，这里不需要 margin-top 了 */
             margin-top: 0; 
-            
             width: 100%;
             align-items: center;
         }
@@ -85,26 +81,18 @@
             border-right: 2px solid transparent;
             position: relative;
         }
+        
+        /* 选中时的白线特效 */
         .side-nav a.menu-link::after {
             content: '';
             position: absolute;
-            
-            /* 位置：放在文字的“右侧” (视觉上的右边) */
             left: -12px; 
             top: 0;
-            
-            /* 形状：一条竖线 */
             width: 2px; 
-            height: 0%; /* 默认高度是0，隐藏起来 */
-            
-            /* 颜色与发光 */
+            height: 0%; 
             background-color: #fff;
-            box-shadow: 0 0 8px rgba(255, 255, 255, 0.9); /* 白色的光晕 */
-            
-            /* 动画：高度变化 */
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
             transition: height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            
-            /* 细节：让线居中一点（可选） */
             bottom: 0;
             margin: auto 0;
         }
@@ -112,36 +100,27 @@
         .side-nav a.menu-link.active {
             color: #fff !important;
             opacity: 1;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* 文字本身加一点点柔光 */
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); 
         }
-        
-        /* 当激活时，让线的高度变成 100% */
-        .side-nav a.menu-link.active::after {
-            height: 100%;
-        }
+        .side-nav a.menu-link.active::after { height: 100%; }
 
-        /* 🔥新加：底部社交图标容器 */
+        /* 底部社交图标 */
         .social-links {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 12px; /* 图标之间的距离 */
-            
-            /* 👇 调整4：这个属性会自动把图标“推”到最下面，但不会推出去 */
+            gap: 12px; 
             margin-top: auto; 
-            
-            /* 确保图标可见 */
             z-index: 1001; 
         }
         
-        /* 图标按钮样式 */
         .social-btn {
             color: #fff;
-            font-size: 1.1rem; /* 图标大小 */
+            font-size: 1.1rem; 
             text-decoration: none;
             transition: all 0.3s;
             opacity: 0.8;
-            display: block; /* 确保它占位置 */
+            display: block; 
         }
         
         .social-btn:hover {
@@ -177,26 +156,115 @@
         .card h3 { color: var(--main-red); margin: 0.5rem 0; font-size: 1.1rem; }
         .card p { font-size: 0.85rem; color: #888; margin: 0; }
 
-        /* 时间轴 */
-        .timeline-container { border-left: 2px solid var(--main-red); margin-left: 50%; padding-bottom: 50px; }
-        .timeline-box { padding-left: 40px; position: relative; margin-bottom: 60px; }
-        .timeline-dot { position: absolute; left: -11px; top: 0; width: 20px; height: 20px; border-radius: 50%; background: #fff; border: 4px solid var(--main-red); }
-        .timeline-dot.current { background: var(--main-red); }
-        .year-badge { background: var(--main-red); color: white; padding: 3px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: bold; display: inline-block; margin-bottom: 10px; }
+        /* --- 🔥这里是新的：带照片的时间轴 CSS --- */
+        
+        /* 总容器 - 只有中间一条红线 */
+        .timeline-container {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px 0;
+            border-left: none; /* 去掉旧的左边框 */
+            margin-left: 0; /* 去掉旧的 margin */
+        }
+        /* 中间的红线 */
+        .timeline-container::after {
+            content: '';
+            position: absolute;
+            width: 3px;
+            background-color: rgba(232, 90, 113, 0.3);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -1px;
+        }
+
+        /* 每一行：左图 + 中点 + 右文 */
+        .timeline-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 80px;
+            position: relative;
+        }
+
+        /* 左侧：照片区域 */
+        .timeline-image-box {
+            width: 45%;
+            padding-right: 40px;
+            text-align: right;
+            position: relative;
+        }
+        .timeline-photo {
+            width: 220px;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 4px solid #fff;
+            box-shadow: 0 10px 25px rgba(232, 90, 113, 0.25);
+            transform: rotate(-3deg);
+            transition: all 0.4s ease;
+        }
+        .timeline-row:hover .timeline-photo {
+            transform: rotate(0deg) scale(1.05);
+            box-shadow: 0 15px 35px rgba(232, 90, 113, 0.4);
+        }
+
+        /* 中间：点 */
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #fff;
+            border: 5px solid var(--main-red);
+            z-index: 2;
+            box-shadow: 0 0 0 4px rgba(255,255,255,0.8);
+        }
+        .timeline-dot.current {
+            background: var(--main-red);
+            box-shadow: 0 0 0 4px rgba(232, 90, 113, 0.3);
+        }
+
+        /* 右侧：文字 */
+        .timeline-content-box {
+            width: 45%;
+            padding-left: 40px;
+            text-align: left;
+        }
+        .year-badge { 
+            background: var(--main-red); 
+            color: white; 
+            padding: 4px 15px; 
+            border-radius: 20px; 
+            font-size: 0.85rem; 
+            font-weight: bold; 
+            display: inline-block; 
+            margin-bottom: 15px; 
+            letter-spacing: 1px; 
+        }
+        .timeline-content-box h3 { margin-top: 0; color: var(--text-dark); font-size: 1.5rem;}
+        .timeline-content-box p { color: #777; line-height: 1.8; }
         
         /* 移动端适配 */
         @media (max-width: 768px) {
             body { padding-right: 0; padding-top: 60px; }
             .grid-section { grid-template-columns: 1fr; }
             .side-nav { width: 100%; height: 60px; flex-direction: row; bottom: auto; border-left: none; border-bottom: 2px solid #fff; padding: 0 20px; }
-            .side-nav::before { display: none; }
-            .nav-links { flex-direction: row; gap: 1rem; margin: 0; /* 手机端取消自动边距 */ }
+            .nav-links { flex-direction: row; gap: 1rem; margin: 0; }
             .side-nav a.menu-link { writing-mode: horizontal-tb; font-size: 0.9rem; }
-            
-            /* 手机端图标放右边 */
             .social-links { flex-direction: row; gap: 15px; margin-left: auto; }
-            .social-btn { font-size: 1.2rem; }
-            .timeline-container { margin-left: 20px; }
+            
+            /* 时间轴手机适配 */
+            .timeline-container::after { left: 30px; }
+            .timeline-row { flex-direction: column; align-items: flex-start; margin-left: 30px; padding-left: 30px; margin-bottom: 50px; }
+            .timeline-image-box, .timeline-content-box { width: 100%; padding: 0; text-align: left; }
+            .timeline-image-box { margin-bottom: 20px; }
+            .timeline-photo { width: 100%; max-width: 350px; height: auto; transform: rotate(0deg); }
+            .timeline-dot { left: -32px; top: auto; bottom: auto; transform: none; margin-top: 10px; }
+            .timeline-image-box + .timeline-dot { top: auto; }
         }
     </style>
 </head>
@@ -296,35 +364,61 @@
             </div>
         </section>
 
-        <section id="story" style="margin-bottom: 50px;">
+        <section id="story" style="margin-bottom: 50px; padding-top: 50px;">
             <div class="section-header" data-aos="fade-up">
                 <h2>My Story</h2>
             </div>
+            
             <div class="timeline-container">
-                <div class="timeline-box" data-aos="fade-left" data-aos-delay="0">
-                    <div class="timeline-dot current"></div>
-                    <span class="year-badge">2023 - NOW</span>
-                    <h3 style="margin-top: 10px;">大学篇：自由与探索</h3>
-                    <p>主修计算机科学。开始用代码构建自己的想法，遇见了志同道合的伙伴，加入了社团，正在探索未来的无限可能。</p>
+                
+                <div class="timeline-row">
+                    <div class="timeline-image-box" data-aos="fade-right" data-aos-delay="0">
+                        <img src="https://placehold.co/400x300/e85a71/ffffff?text=College+Photo" alt="大学照片" class="timeline-photo">
+                    </div>
+                    <div class="timeline-dot current" data-aos="zoom-in" data-aos-delay="100"></div>
+                    <div class="timeline-content-box" data-aos="fade-left" data-aos-delay="200">
+                        <span class="year-badge">2023 - NOW</span>
+                        <h3>大学篇：自由与探索</h3>
+                        <p>主修计算机科学。开始用代码构建自己的想法，遇见了志同道合的伙伴，加入了社团，正在探索未来的无限可能。</p>
+                    </div>
                 </div>
-                <div class="timeline-box" data-aos="fade-left" data-aos-delay="100">
-                    <div class="timeline-dot"></div>
-                    <span class="year-badge">2020 - 2023</span>
-                    <h3 style="margin-top: 10px;">高中篇：奋斗的青春</h3>
-                    <p>那是书桌上堆满试卷的日子。虽然辛苦，但每晚的夕阳和操场上的奔跑，都是最珍贵的回忆。</p>
+
+                <div class="timeline-row">
+                    <div class="timeline-image-box" data-aos="fade-right" data-aos-delay="100">
+                        <img src="https://placehold.co/400x300/fcefe9/e85a71?text=High+School" alt="高中照片" class="timeline-photo">
+                    </div>
+                    <div class="timeline-dot" data-aos="zoom-in" data-aos-delay="200"></div>
+                    <div class="timeline-content-box" data-aos="fade-left" data-aos-delay="300">
+                        <span class="year-badge">2020 - 2023</span>
+                        <h3>高中篇：奋斗的青春</h3>
+                        <p>那是书桌上堆满试卷的日子。虽然辛苦，但每晚的夕阳和操场上的奔跑，都是最珍贵的回忆。</p>
+                    </div>
                 </div>
-                <div class="timeline-box" data-aos="fade-left" data-aos-delay="200">
-                    <div class="timeline-dot"></div>
-                    <span class="year-badge">2011 - 2020</span>
-                    <h3 style="margin-top: 10px;">少年篇：好奇的萌芽</h3>
-                    <p>第一次接触电脑，第一次读完一本长篇小说。在这个阶段，我开始对这个世界产生了无数个“为什么”。</p>
+
+                <div class="timeline-row">
+                    <div class="timeline-image-box" data-aos="fade-right" data-aos-delay="200">
+                        <img src="https://placehold.co/400x300/fcefe9/e85a71?text=Middle+School" alt="少年照片" class="timeline-photo">
+                    </div>
+                    <div class="timeline-dot" data-aos="zoom-in" data-aos-delay="300"></div>
+                    <div class="timeline-content-box" data-aos="fade-left" data-aos-delay="400">
+                        <span class="year-badge">2011 - 2020</span>
+                        <h3>少年篇：好奇的萌芽</h3>
+                        <p>第一次接触电脑，第一次读完一本长篇小说。在这个阶段，我开始对这个世界产生了无数个“为什么”。</p>
+                    </div>
                 </div>
-                <div class="timeline-box" data-aos="fade-left" data-aos-delay="300">
-                    <div class="timeline-dot"></div>
-                    <span class="year-badge">THE BEGINNING</span>
-                    <h3 style="margin-top: 10px;">幼年篇：梦的起点</h3>
-                    <p>无忧无虑的时光。那时的世界很小，只有家和幼儿园的滑滑梯，但那里的快乐很纯粹。</p>
+
+                <div class="timeline-row">
+                    <div class="timeline-image-box" data-aos="fade-right" data-aos-delay="300">
+                        <img src="https://placehold.co/400x300/fcefe9/e85a71?text=Childhood" alt="童年照片" class="timeline-photo">
+                    </div>
+                    <div class="timeline-dot" data-aos="zoom-in" data-aos-delay="400"></div>
+                    <div class="timeline-content-box" data-aos="fade-left" data-aos-delay="500">
+                        <span class="year-badge">THE BEGINNING</span>
+                        <h3>幼年篇：梦的起点</h3>
+                        <p>无忧无虑的时光。那时的世界很小，只有家和幼儿园的滑滑梯，但那里的快乐很纯粹。</p>
+                    </div>
                 </div>
+
             </div>
         </section>
     </div>
@@ -341,11 +435,10 @@
     </script>
 
     <script>
-        // 获取所有需要监听的板块和菜单链接
+        // 滚动监听脚本 (Scroll Spy)
         const sections = document.querySelectorAll('section[id]');
         const navLinks = document.querySelectorAll('.side-nav .menu-link');
     
-        // 监听滚动事件
         window.addEventListener('scroll', () => {
             let current = '';
             
@@ -353,24 +446,20 @@
                 const sectionTop = section.offsetTop;
                 const sectionHeight = section.clientHeight;
                 
-                // 🔥 核心算法：当页面滚动到板块高度的 1/3 处时，激活该板块
-                // 这里的 - 250 是一个偏移量，你可以调整它来改变激活的时机（越大越早激活）
+                // 当页面滚动到板块上方一定距离时，视为激活
                 if (pageYOffset >= (sectionTop - 300)) {
                     current = section.getAttribute('id');
                 }
             });
     
-            // 移除所有链接的高亮，只给当前对应的链接加上高亮
             navLinks.forEach(link => {
                 link.classList.remove('active');
-                // 检查链接的 href 是否匹配当前的板块 id
                 if (link.getAttribute('href').includes(current)) {
                     link.classList.add('active');
                 }
             });
         });
         
-        // 初始化时执行一次，确保刷新页面时高亮正确
         window.dispatchEvent(new Event('scroll'));
     </script>
 </body>
