@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Li Hang - 典雅双重相框版</title>
+    <title>Li Hang - 典雅长信纸版</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -18,14 +18,19 @@
             --sidebar-width: 80px; 
         }
 
-        /* --- 🔥 1. Body 设置 (只负责背景和呼吸空间) --- */
+        /* --- 🔥 1. Body 设置 (作为定位基准) --- */
         body {
             margin: 0;
             font-family: 'Noto Serif SC', serif;
             background-color: var(--bg-cream);
             color: var(--text-dark);
             
-            /* 背景花纹 */
+            /* 关键修改：设置为相对定位，让里面的相框能根据网页总高度来拉伸 */
+            position: relative; 
+            
+            /* 保证最小高度也是一屏幕，防止内容太少时边框塌陷 */
+            min-height: 100vh; 
+            
             background-image: 
                 radial-gradient(#e85a71 1px, transparent 1px),
                 radial-gradient(#e85a71 1px, transparent 1px);
@@ -34,60 +39,50 @@
             background-blend-mode: overlay; 
             overflow-x: hidden;
 
-            /* ❗关键：给 body 加内边距，而不是边框 */
-            /* 这里的 padding 是为了防止内容被那个固定的框挡住 */
-            /* 上:40px | 右:120px (侧边栏80+框20+间隙20) | 下:40px | 左:40px */
+            /* 内边距：给边框留位置，防止内容贴到边框上 */
+            /* 上:40px | 右:120px | 下:40px | 左:40px */
             padding: 40px 120px 40px 40px; 
-            
             box-sizing: border-box;
         }
 
-        /* --- 🔥 2. 新增：悬浮双重相框 (核心改动) --- */
-        /* 这个元素会永远固定在屏幕上，不会随滚动条移动 */
+        /* --- 🔥 2. 双重相框 (改为绝对定位 Absolute) --- */
+        /* 这里的绝对定位会让它“贴”在网页文档上，而不是屏幕上 */
         .page-frame {
-            position: fixed; 
+            position: absolute; /* 👈 核心修改：从 fixed 改为 absolute */
             top: 0;
             left: 0;
-            bottom: 0;
             
-            /* 宽度计算：屏幕总宽 - 侧边栏宽度 */
-            /* 这样右边的框就会刚好贴在侧边栏的左边 */
+            /* 让高度自动拉伸，覆盖整个网页的长度 */
+            bottom: 0; 
+            
+            /* 宽度仍然是减去侧边栏的宽度 */
             width: calc(100% - var(--sidebar-width)); 
             
-            /* 第一层：厚实的粉色边框 */
+            /* 外层粉色边框 */
             border: 15px solid var(--main-red);
             
-            /* 让中间变透明，这样才能看到网页内容 */
             background: transparent;
-            
-            /* ❗让鼠标点击能穿透这个相框，否则你点不到页面里的按钮 */
             pointer-events: none; 
-            
-            /* 层级：比内容高，但比侧边栏低 */
             z-index: 990; 
-            
             box-sizing: border-box;
         }
 
-        /* 第二层：内圈的细线 (利用伪元素实现) */
+        /* 内层细线 */
         .page-frame::after {
             content: '';
             position: absolute;
-            
-            /* 距离外层边框 6px，形成双重线的空隙 */
             top: 6px; 
             left: 6px; 
             right: 6px; 
             bottom: 6px;
-            
-            /* 细细的实线 */
             border: 1px solid var(--main-red);
-            opacity: 0.6; /* 稍微淡一点，更有层次 */
+            opacity: 0.6;
         }
 
-        /* --- 2. 右侧垂直导航栏 --- */
+        /* --- 3. 右侧垂直导航栏 (保持 Fixed 不动) --- */
+        /* 导航栏通常需要保持在屏幕上方便点击，所以我保持了 fixed */
         .side-nav {
-            position: fixed;
+            position: fixed; 
             top: 0;
             right: 0;
             width: var(--sidebar-width);
@@ -181,7 +176,7 @@
             color: var(--gold-accent);
         }
 
-        /* --- 3. 内容布局 --- */
+        /* --- 4. 内容布局 --- */
         .container { 
             max-width: 1000px; 
             margin: 0 auto; 
