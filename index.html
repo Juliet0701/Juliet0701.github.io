@@ -44,14 +44,15 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            /* 🔥关键改动：space-between 让内容两端对齐，中间留白 */
             justify-content: space-between; 
             z-index: 1000;
             box-shadow: -2px 0 10px rgba(0,0,0,0.1);
             border-left: 2px solid #fff;
-            padding-bottom: 2rem; /* 底部留点空隙给图标 */
-            padding-top: 2rem;    /* 顶部也留点空隙 */
-            box-sizing: border-box; /* 确保padding不会撑大宽度 */
+            
+            /* 👇 修改点 1：减小底部留白，把图标往下推 */
+            padding-bottom: 1.5rem; 
+            padding-top: 2rem;
+            box-sizing: border-box;
         }
 
         .side-nav::before {
@@ -86,23 +87,24 @@
         .social-links {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 15px; /* 图标之间的间距稍微缩小一点，更紧凑 */
             align-items: center;
         }
 
+        /* 👇 修改点 3：明显缩小图标尺寸 */
         .social-btn {
             color: #fff;
-            font-size: 1.5rem;
+            font-size: 1.1rem; /* 从 1.5rem 改为 1.1rem，更加精致 */
             text-decoration: none;
             transition: all 0.3s;
-            opacity: 0.7;
+            opacity: 0.8; /*稍微增加一点透明度，不那么突兀*/
         }
+        
         .social-btn:hover {
             opacity: 1;
-            transform: scale(1.2) rotate(10deg); /* 悬停时稍微放大并旋转一点 */
-            color: var(--gold-accent); /* 悬停变金色 */
+            transform: scale(1.2); 
+            color: var(--gold-accent);
         }
-
 
         /* --- 3. 内容布局 --- */
         .container { max-width: 1000px; margin: 0 auto; padding: 4rem 2rem; }
