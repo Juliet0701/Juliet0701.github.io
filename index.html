@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Li Hang - 典雅信纸版</title>
+    <title>Li Hang - 典雅双重相框版</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -18,14 +18,14 @@
             --sidebar-width: 80px; 
         }
 
-        /* --- 🔥 核心改动：Body 变为“信纸” 🔥 --- */
+        /* --- 🔥 1. Body 设置 (只负责背景和呼吸空间) --- */
         body {
-            /* 1. 基础背景 */
             margin: 0;
             font-family: 'Noto Serif SC', serif;
             background-color: var(--bg-cream);
             color: var(--text-dark);
             
+            /* 背景花纹 */
             background-image: 
                 radial-gradient(#e85a71 1px, transparent 1px),
                 radial-gradient(#e85a71 1px, transparent 1px);
@@ -34,28 +34,58 @@
             background-blend-mode: overlay; 
             overflow-x: hidden;
 
-            /* ✨ 2. 给整个文档加实体边框 (上下左右都有) */
-            /* 这就是你要的效果：边框跟着页面走 */
-            border: 20px solid var(--text-dark);
+            /* ❗关键：给 body 加内边距，而不是边框 */
+            /* 这里的 padding 是为了防止内容被那个固定的框挡住 */
+            /* 上:40px | 右:120px (侧边栏80+框20+间隙20) | 下:40px | 左:40px */
+            padding: 40px 120px 40px 40px; 
             
-            /* ✨ 3. 右侧特殊处理 */
-            /* 因为右侧有固定的粉色导航栏，我们需要把 body 的右边缘往回缩 */
-            /* 这样 body 的右边框就会显示在导航栏的左边 */
-            margin-right: var(--sidebar-width); 
-            
-            /* ✨ 4. 最小高度 */
-            /* 保证哪怕内容很少，边框也能撑满一屏幕 */
-            min-height: 100vh; 
-            
-            /* ✨ 5. 内边距 */
-            /* 给内容和边框之间留出呼吸空间 */
-            padding: 40px;
-            
-            /* 确保边框宽度算在总尺寸里 */
             box-sizing: border-box;
         }
 
-        /* --- 2. 右侧垂直导航栏 (保持不变) --- */
+        /* --- 🔥 2. 新增：悬浮双重相框 (核心改动) --- */
+        /* 这个元素会永远固定在屏幕上，不会随滚动条移动 */
+        .page-frame {
+            position: fixed; 
+            top: 0;
+            left: 0;
+            bottom: 0;
+            
+            /* 宽度计算：屏幕总宽 - 侧边栏宽度 */
+            /* 这样右边的框就会刚好贴在侧边栏的左边 */
+            width: calc(100% - var(--sidebar-width)); 
+            
+            /* 第一层：厚实的粉色边框 */
+            border: 15px solid var(--main-red);
+            
+            /* 让中间变透明，这样才能看到网页内容 */
+            background: transparent;
+            
+            /* ❗让鼠标点击能穿透这个相框，否则你点不到页面里的按钮 */
+            pointer-events: none; 
+            
+            /* 层级：比内容高，但比侧边栏低 */
+            z-index: 990; 
+            
+            box-sizing: border-box;
+        }
+
+        /* 第二层：内圈的细线 (利用伪元素实现) */
+        .page-frame::after {
+            content: '';
+            position: absolute;
+            
+            /* 距离外层边框 6px，形成双重线的空隙 */
+            top: 6px; 
+            left: 6px; 
+            right: 6px; 
+            bottom: 6px;
+            
+            /* 细细的实线 */
+            border: 1px solid var(--main-red);
+            opacity: 0.6; /* 稍微淡一点，更有层次 */
+        }
+
+        /* --- 2. 右侧垂直导航栏 --- */
         .side-nav {
             position: fixed;
             top: 0;
@@ -155,7 +185,6 @@
         .container { 
             max-width: 1000px; 
             margin: 0 auto; 
-            /* 取消 container 的 padding，由 body 统一控制 */
             padding: 0; 
         }
 
@@ -271,11 +300,11 @@
         
         /* --- 📱 移动端适配 --- */
         @media (max-width: 768px) {
+            /* 手机上隐藏厚边框，太占地方 */
+            .page-frame { display: none; }
+            
             body { 
-                /* 手机上 margin-right 要归零，否则右边会有大白边 */
-                margin-right: 0; 
-                /* 手机上通常不需要这么厚的边框，可以设为0或稍微细一点 */
-                border: 10px solid var(--text-dark);
+                /* 恢复手机上的边距 */
                 padding: 60px 20px 20px 20px; 
             }
 
@@ -297,6 +326,8 @@
     </style>
 </head>
 <body>
+
+    <div class="page-frame"></div>
 
     <nav class="side-nav">
         <div class="nav-links">
