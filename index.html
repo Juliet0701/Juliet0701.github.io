@@ -3,57 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Li Hang - 抹茶典雅版</title>
+    <title>Li Hang - 典雅长信纸版</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
     <style>
-        /* --- 1. 配色方案 (抹茶绿主题) --- */
+        /* --- 1. 配色方案 --- */
         :root {
-            --main-red: #566c5b;   /* 抹茶绿/苔色 */
-            --bg-cream: #fdfcf8;   /* 米色背景 */
-            --text-dark: #4a5d23;  /* 深橄榄绿文字，比纯黑更搭 */
-            --gold-accent: #cba258; /* 金色点缀 */
+            --main-red: #566c5b;   /* 抹茶绿 */
+            --bg-cream: #fdfcf8;   
+            --text-dark: #4a5d23;  
+            --gold-accent: #cba258; 
             --sidebar-width: 80px; 
         }
 
-        /* --- 🔥 新增：飘落叶子的背景样式 🔥 --- */
+        /* --- 飘落叶子的背景样式 --- */
         #leaf-container {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1; /* 放在最底层 */
-            overflow: hidden; /* 防止叶子飘出屏幕出现滚动条 */
-            pointer-events: none; /* 确保鼠标能穿透背景点击内容 */
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; 
+            overflow: hidden; 
+            pointer-events: none; 
         }
-
-        /* 单片叶子的基础样式 */
         .falling-leaf {
             position: absolute;
-            top: -10%; /* 初始位置在屏幕上方外面 */
-            opacity: 0; /* 初始透明 */
-            
-            /* 应用两个动画：一个负责垂直下落，一个负责水平摇摆 */
+            top: -10%; opacity: 0;
             animation-name: verticalFall, horizontalSway;
-            /* 下落是线性的，摇摆是缓动的 */
             animation-timing-function: linear, ease-in-out;
-            /* 无限循环 */
             animation-iteration-count: infinite, infinite;
-            /* 动画时长和延迟将由 JS 动态设置 */
         }
-
-        /* 动画1：垂直下落 */
         @keyframes verticalFall {
             0% { top: -10%; opacity: 0; }
-            10% { opacity: 0.8; } /* 进入屏幕后显现 */
-            90% { opacity: 0.8; } /* 快到底部时保持显现 */
-            100% { top: 110%; opacity: 0; } /* 掉出屏幕下方并消失 */
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% { top: 110%; opacity: 0; }
         }
-
-        /* 动画2：水平摇摆和旋转 (模拟飘动感) */
         @keyframes horizontalSway {
             0% { transform: translateX(-30px) rotate(0deg); }
             50% { transform: translateX(30px) rotate(180deg); }
@@ -73,21 +58,17 @@
             box-sizing: border-box;
         }
 
-        /* --- 2. 双重相框 (文档模式 - Absolute) --- */
+        /* --- 2. 双重相框 (Absolute) --- */
         .page-frame {
             position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
+            top: 0; left: 0; bottom: 0;
             width: calc(100% - var(--sidebar-width)); 
-            /* 使用抹茶绿边框 */
             border: 15px solid var(--main-red);
             background: transparent;
             pointer-events: none; 
             z-index: 990; 
             box-sizing: border-box;
         }
-
         .page-frame::after {
             content: '';
             position: absolute;
@@ -100,9 +81,7 @@
         .side-nav {
             position: fixed; 
             top: 0; right: 0;
-            width: var(--sidebar-width);
-            height: 100vh;
-            /* 使用抹茶绿背景 */
+            width: var(--sidebar-width); height: 100vh;
             background-color: var(--main-red);
             display: flex; flex-direction: column; align-items: center; justify-content: flex-start; 
             z-index: 1000;
@@ -111,7 +90,6 @@
             padding-top: 60px; padding-bottom: 30px; 
             box-sizing: border-box;
         }
-        
         .nav-links { display: flex; flex-direction: column; gap: 2.5rem; margin-top: 0; width: 100%; align-items: center; }
         .side-nav a.menu-link {
             text-decoration: none; color: #fff; font-family: 'Cinzel Decorative', serif; font-size: 1.1rem; font-weight: bold; writing-mode: vertical-rl; text-orientation: mixed; letter-spacing: 3px; transition: all 0.3s; opacity: 0.8; padding: 10px 0; border-right: 2px solid transparent; position: relative;
@@ -128,40 +106,73 @@
 
         /* --- 4. 内容布局 --- */
         .container { max-width: 1000px; margin: 0 auto; padding: 0; }
-        /* 标题颜色自动变为抹茶绿 */
         .section-header { text-align: center; margin-bottom: 4rem; position: relative; padding: 2rem 0; }
         .section-header h2 { font-size: 2.5rem; color: var(--main-red); font-family: 'Cinzel Decorative', serif; margin: 0; }
         .section-header::after { content: '☘'; font-size: 2rem; color: var(--gold-accent); display: block; margin-top: 10px; }
 
-        /* Hero */
+        /* Hero & About */
         .hero { height: 90vh; display: flex; align-items: center; justify-content: center; position: relative; }
-        /* Hero卡片边框自动变色 */
         .hero-card { background: rgba(255, 255, 255, 0.9); padding: 4rem; border: 2px solid var(--main-red); text-align: center; box-shadow: 10px 10px 0px rgba(86, 108, 91, 0.2); max-width: 600px; }
         .hero h1 { font-size: 3.5rem; margin: 0; color: var(--main-red); }
 
-        /* 九宫格 */
+        /* --- 九宫格 & 弹窗触发 --- */
         .grid-section { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-        .card { background: #fff; padding: 1rem; border: 1px solid var(--gold-accent); text-align: center; transition: transform 0.3s; }
+        .card { 
+            background: #fff; padding: 1rem; border: 1px solid var(--gold-accent); text-align: center; transition: transform 0.3s; cursor: pointer; /* 鼠标变成手型 */
+        }
         .card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        /* 图片占位符颜色调整 (仅用于演示，实际换成你的图片后不影响) */
         .card img { width: 100%; height: 180px; object-fit: cover; margin-bottom: 10px; background-color: #eceadd; }
         .card h3 { color: var(--main-red); margin: 0.5rem 0; font-size: 1.1rem; }
         .card p { font-size: 0.85rem; color: #888; margin: 0; }
 
+        /* --- 🔥 弹窗样式 (Modal) --- */
+        .modal-overlay {
+            display: none; 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(43, 58, 48, 0.7); backdrop-filter: blur(5px);
+            z-index: 2000; justify-content: center; align-items: center;
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        
+        .modal-content {
+            background-color: var(--bg-cream); width: 90%; max-width: 900px; max-height: 85vh;
+            display: flex; position: relative;
+            border: 10px solid var(--main-red);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3); overflow: hidden;
+            transform: translateY(20px); transition: transform 0.3s ease;
+        }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+        
+        .modal-content::after {
+            content: ''; position: absolute; top: 6px; left: 6px; right: 6px; bottom: 6px;
+            border: 1px solid var(--main-red); opacity: 0.5; pointer-events: none;
+        }
+
+        .modal-img-box { width: 50%; position: relative; }
+        .modal-img-box img { width: 100%; height: 100%; object-fit: cover; }
+        .modal-text-box { width: 50%; padding: 3rem; overflow-y: auto; display: flex; flex-direction: column; justify-content: center; }
+        .modal-text-box h3 {
+            font-family: 'Cinzel Decorative', serif; color: var(--main-red); font-size: 2rem; margin-top: 0; margin-bottom: 1.5rem;
+            border-bottom: 2px solid rgba(86, 108, 91, 0.2); padding-bottom: 10px; display: inline-block;
+        }
+        .modal-text-box p { font-size: 1rem; line-height: 1.8; color: #555; white-space: pre-wrap; }
+        
+        .close-btn {
+            position: absolute; top: 15px; right: 20px; font-size: 2rem; color: var(--main-red); cursor: pointer; z-index: 10; transition: transform 0.2s;
+        }
+        .close-btn:hover { transform: rotate(90deg); color: var(--gold-accent); }
+
         /* --- 时间轴 CSS --- */
         .timeline-container { position: relative; max-width: 1000px; margin: 0 auto; padding: 20px 0; }
-        /* 时间轴中线颜色 */
         .timeline-container::after { content: ''; position: absolute; width: 3px; background-color: rgba(86, 108, 91, 0.3); top: 0; bottom: 0; left: 50%; margin-left: -1px; }
         .timeline-row { display: flex; justify-content: center; align-items: center; margin-bottom: 80px; position: relative; }
         .timeline-image-box { width: 45%; padding-right: 40px; text-align: right; position: relative; }
-        /* 照片阴影颜色 */
         .timeline-photo { width: 220px; height: 160px; object-fit: cover; border-radius: 12px; border: 4px solid #fff; box-shadow: 0 10px 25px rgba(86, 108, 91, 0.25); transform: rotate(-3deg); transition: all 0.4s ease; background-color: #eceadd; }
         .timeline-row:hover .timeline-photo { transform: rotate(0deg) scale(1.05); box-shadow: 0 15px 35px rgba(86, 108, 91, 0.4); }
-        /* 时间轴点颜色 */
         .timeline-dot { position: absolute; left: 50%; transform: translateX(-50%); width: 24px; height: 24px; border-radius: 50%; background: #fff; border: 5px solid var(--main-red); z-index: 2; box-shadow: 0 0 0 4px rgba(255,255,255,0.8); }
         .timeline-dot.current { background: var(--main-red); box-shadow: 0 0 0 4px rgba(86, 108, 91, 0.3); }
         .timeline-content-box { width: 45%; padding-left: 40px; text-align: left; }
-        /* 年份标签颜色 */
         .year-badge { background: var(--main-red); color: white; padding: 4px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; display: inline-block; margin-bottom: 15px; letter-spacing: 1px; }
         .timeline-content-box h3 { margin-top: 0; color: var(--text-dark); font-size: 1.5rem;}
         .timeline-content-box p { color: #777; line-height: 1.8; }
@@ -182,13 +193,16 @@
             .timeline-photo { width: 100%; max-width: 350px; height: auto; transform: rotate(0deg); }
             .timeline-dot { left: -32px; top: auto; bottom: auto; transform: none; margin-top: 10px; }
             .timeline-image-box + .timeline-dot { top: auto; }
+            /* 弹窗移动端 */
+            .modal-content { flex-direction: column; width: 90%; height: auto; max-height: 90vh; overflow-y: auto; }
+            .modal-img-box { width: 100%; height: 250px; flex-shrink: 0;}
+            .modal-text-box { width: 100%; padding: 2rem 1.5rem; }
         }
     </style>
 </head>
 <body>
 
     <div id="leaf-container"></div>
-
     <div class="page-frame"></div>
 
     <nav class="side-nav">
@@ -198,14 +212,9 @@
             <a href="#hobby" class="menu-link">Hobby</a>
             <a href="#story" class="menu-link">Story</a>
         </div>
-
         <div class="social-links">
-            <a href="https://facebook.com/你的账号" target="_blank" class="social-btn">
-                <i class="fab fa-facebook-f"></i>
-            </a>
-            <a href="https://instagram.com/你的账号" target="_blank" class="social-btn">
-                <i class="fab fa-instagram"></i>
-            </a>
+            <a href="https://facebook.com/你的账号" target="_blank" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://instagram.com/你的账号" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a>
         </div>
     </nav>
 
@@ -219,194 +228,145 @@
         </section>
 
         <section id="about" style="margin-bottom: 100px;">
-            <div class="section-header" data-aos="fade-up">
-                <h2>Introduction</h2>
-            </div>
+            <div class="section-header" data-aos="fade-up"><h2>Introduction</h2></div>
             <div style="background: rgba(255, 255, 255, 0.95); padding: 3rem; border-left: 5px solid var(--main-red);" data-aos="fade-left">
                 <p style="font-size: 1.1rem; line-height: 2;">
-                    你好，这里是 Li Hang。
-                    <br>
-                    在这个小小的数字花园里，我种下了9种热爱，也记录了从孩童到成年的4段旅程。
-                    欢迎你的来访。
+                    你好，这里是 Li Hang。<br>在这个小小的数字花园里，我种下了9种热爱，也记录了从孩童到成年的4段旅程。欢迎你的来访。
                 </p>
             </div>
         </section>
 
         <section id="hobby" style="margin-bottom: 100px;">
-            <div class="section-header" data-aos="fade-up">
-                <h2>My 9 Hobbies</h2>
-            </div>
+            <div class="section-header" data-aos="fade-up"><h2>My 9 Hobbies</h2></div>
             <div class="grid-section">
-                <div class="card" data-aos="fade-up" data-aos-delay="0">
+                
+                <div class="card" onclick="openModal(this)">
                     <img src="https://placehold.co/300x200/eceadd/566c5b?text=1+Photo">
                     <h3>摄影</h3><p>记录瞬间</p>
+                    <div class="hidden-content" style="display:none;">
+                        <div class="full-title">摄影 Photography</div>
+                        <div class="full-desc">这里是关于摄影的详细介绍...<br>你可以在这里写很长很长的故事。</div>
+                        <img class="full-img" src="https://placehold.co/600x400/eceadd/566c5b?text=Photo+Detail">
+                    </div>
                 </div>
-                <div class="card" data-aos="fade-up" data-aos-delay="100">
+
+                <div class="card" onclick="openModal(this)">
                     <img src="https://placehold.co/300x200/eceadd/566c5b?text=2+Code">
                     <h3>编程</h3><p>创造世界</p>
+                    <div class="hidden-content" style="display:none;">
+                        <div class="full-title">编程 Coding</div>
+                        <div class="full-desc">代码构建世界的乐趣...</div>
+                        <img class="full-img" src="https://placehold.co/600x400/eceadd/566c5b?text=Code+Detail">
+                    </div>
                 </div>
-                <div class="card" data-aos="fade-up" data-aos-delay="200">
-                    <img src="https://placehold.co/300x200/eceadd/566c5b?text=3+Read">
-                    <h3>阅读</h3><p>灵魂栖息</p>
-                </div>
-                <div class="card" data-aos="fade-up" data-aos-delay="300">
-                    <img src="https://placehold.co/300x200/eceadd/566c5b?text=4+Movie">
-                    <h3>电影</h3><p>光影梦境</p>
-                </div>
-                <div class="card" data-aos="fade-up" data-aos-delay="400">
-                    <img src="https://placehold.co/300x200/eceadd/566c5b?text=5+Music">
-                    <h3>音乐</h3><p>节奏律动</p>
-                </div>
-                <div class="card" data-aos="fade-up" data-aos-delay="500">
-                    <img src="https://placehold.co/300x200/eceadd/566c5b?text=6+Travel">
-                    <h3>旅行</h3><p>丈量土地</p>
-                </div>
-                <div class="card" data-aos="fade-up" data-aos-delay="600">
-                    <img src="https://placehold.co/300x200/eceadd/566c5b?text=7+Game">
-                    <h3>游戏</h3><p>第九艺术</p>
-                </div>
-                <div class="card" data-aos="fade-up" data-aos-delay="700">
-                    <img src="https://placehold.co/300x200/eceadd/566c5b?text=8+Cook">
-                    <h3>烹饪</h3><p>生活烟火</p>
-                </div>
-                <div class="card" data-aos="fade-up" data-aos-delay="800">
-                    <img src="https://placehold.co/300x200/eceadd/566c5b?text=9+Sleep">
-                    <h3>放空</h3><p>充电时刻</p>
-                </div>
+
+                <div class="card" data-aos="fade-up"><img src="https://placehold.co/300x200/eceadd/566c5b?text=3+Read"><h3>阅读</h3><p>灵魂栖息</p></div>
+                <div class="card" data-aos="fade-up"><img src="https://placehold.co/300x200/eceadd/566c5b?text=4+Movie"><h3>电影</h3><p>光影梦境</p></div>
+                <div class="card" data-aos="fade-up"><img src="https://placehold.co/300x200/eceadd/566c5b?text=5+Music"><h3>音乐</h3><p>节奏律动</p></div>
+                <div class="card" data-aos="fade-up"><img src="https://placehold.co/300x200/eceadd/566c5b?text=6+Travel"><h3>旅行</h3><p>丈量土地</p></div>
+                <div class="card" data-aos="fade-up"><img src="https://placehold.co/300x200/eceadd/566c5b?text=7+Game"><h3>游戏</h3><p>第九艺术</p></div>
+                <div class="card" data-aos="fade-up"><img src="https://placehold.co/300x200/eceadd/566c5b?text=8+Cook"><h3>烹饪</h3><p>生活烟火</p></div>
+                <div class="card" data-aos="fade-up"><img src="https://placehold.co/300x200/eceadd/566c5b?text=9+Sleep"><h3>放空</h3><p>充电时刻</p></div>
             </div>
         </section>
 
         <section id="story" style="margin-bottom: 50px; padding-top: 50px;">
-            <div class="section-header" data-aos="fade-up">
-                <h2>My Story</h2>
-            </div>
-            
+            <div class="section-header" data-aos="fade-up"><h2>My Story</h2></div>
             <div class="timeline-container">
                 <div class="timeline-row">
-                    <div class="timeline-image-box" data-aos="fade-right" data-aos-delay="0">
-                        <img src="https://placehold.co/400x300/566c5b/ffffff?text=College+Photo" alt="大学照片" class="timeline-photo">
-                    </div>
-                    <div class="timeline-dot current" data-aos="zoom-in" data-aos-delay="100"></div>
-                    <div class="timeline-content-box" data-aos="fade-left" data-aos-delay="200">
-                        <span class="year-badge">2023 - NOW</span>
-                        <h3>大学篇：自由与探索</h3>
-                        <p>主修计算机科学。开始用代码构建自己的想法，遇见了志同道合的伙伴，加入了社团，正在探索未来的无限可能。</p>
-                    </div>
+                    <div class="timeline-image-box" data-aos="fade-right"><img src="https://placehold.co/400x300/566c5b/ffffff?text=College+Photo" class="timeline-photo"></div>
+                    <div class="timeline-dot current" data-aos="zoom-in"></div>
+                    <div class="timeline-content-box" data-aos="fade-left"><span class="year-badge">2023 - NOW</span><h3>大学篇</h3><p>主修计算机科学...</p></div>
                 </div>
-
                 <div class="timeline-row">
-                    <div class="timeline-image-box" data-aos="fade-right" data-aos-delay="100">
-                        <img src="https://placehold.co/400x300/eceadd/566c5b?text=High+School" alt="高中照片" class="timeline-photo">
-                    </div>
-                    <div class="timeline-dot" data-aos="zoom-in" data-aos-delay="200"></div>
-                    <div class="timeline-content-box" data-aos="fade-left" data-aos-delay="300">
-                        <span class="year-badge">2020 - 2023</span>
-                        <h3>高中篇：奋斗的青春</h3>
-                        <p>那是书桌上堆满试卷的日子。虽然辛苦，但每晚的夕阳和操场上的奔跑，都是最珍贵的回忆。</p>
-                    </div>
+                    <div class="timeline-image-box" data-aos="fade-right"><img src="https://placehold.co/400x300/eceadd/566c5b?text=High+School" class="timeline-photo"></div>
+                    <div class="timeline-dot" data-aos="zoom-in"></div>
+                    <div class="timeline-content-box" data-aos="fade-left"><span class="year-badge">2020 - 2023</span><h3>高中篇</h3><p>奋斗的青春...</p></div>
                 </div>
-
                 <div class="timeline-row">
-                    <div class="timeline-image-box" data-aos="fade-right" data-aos-delay="200">
-                        <img src="https://placehold.co/400x300/eceadd/566c5b?text=Middle+School" alt="少年照片" class="timeline-photo">
-                    </div>
-                    <div class="timeline-dot" data-aos="zoom-in" data-aos-delay="300"></div>
-                    <div class="timeline-content-box" data-aos="fade-left" data-aos-delay="400">
-                        <span class="year-badge">2011 - 2020</span>
-                        <h3>少年篇：好奇的萌芽</h3>
-                        <p>第一次接触电脑，第一次读完一本长篇小说。在这个阶段，我开始对这个世界产生了无数个“为什么”。</p>
-                    </div>
+                    <div class="timeline-image-box" data-aos="fade-right"><img src="https://placehold.co/400x300/eceadd/566c5b?text=Middle+School" class="timeline-photo"></div>
+                    <div class="timeline-dot" data-aos="zoom-in"></div>
+                    <div class="timeline-content-box" data-aos="fade-left"><span class="year-badge">2011 - 2020</span><h3>少年篇</h3><p>好奇的萌芽...</p></div>
                 </div>
-
                 <div class="timeline-row">
-                    <div class="timeline-image-box" data-aos="fade-right" data-aos-delay="300">
-                        <img src="https://placehold.co/400x300/eceadd/566c5b?text=Childhood" alt="童年照片" class="timeline-photo">
-                    </div>
-                    <div class="timeline-dot" data-aos="zoom-in" data-aos-delay="400"></div>
-                    <div class="timeline-content-box" data-aos="fade-left" data-aos-delay="500">
-                        <span class="year-badge">THE BEGINNING</span>
-                        <h3>幼年篇：梦的起点</h3>
-                        <p>无忧无虑的时光。那时的世界很小，只有家和幼儿园的滑滑梯，但那里的快乐很纯粹。</p>
-                    </div>
+                    <div class="timeline-image-box" data-aos="fade-right"><img src="https://placehold.co/400x300/eceadd/566c5b?text=Childhood" class="timeline-photo"></div>
+                    <div class="timeline-dot" data-aos="zoom-in"></div>
+                    <div class="timeline-content-box" data-aos="fade-left"><span class="year-badge">THE BEGINNING</span><h3>幼年篇</h3><p>梦的起点...</p></div>
                 </div>
-
             </div>
         </section>
     </div>
 
+    <div class="modal-overlay" id="hobbyModal" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="close-btn" onclick="closeModal(event)">&times;</div>
+            <div class="modal-img-box"><img id="modalImg" src="" alt="Hobby Image"></div>
+            <div class="modal-text-box">
+                <h3 id="modalTitle">Title</h3>
+                <p id="modalDesc">Description goes here...</p>
+            </div>
+        </div>
+    </div>
+
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({
-            offset: 120,
-            duration: 800,
-            easing: 'ease-out-quad',
-            once: false, 
-            mirror: true, 
-        });
-    </script>
-
-    <script>
-        // 滚动监听脚本 (Scroll Spy)
+        AOS.init({ offset: 120, duration: 800, easing: 'ease-out-quad', once: false, mirror: true });
+        
+        // 滚动监听
         const sections = document.querySelectorAll('section[id]');
         const navLinks = document.querySelectorAll('.side-nav .menu-link');
         window.addEventListener('scroll', () => {
             let current = '';
             sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                // const sectionHeight = section.clientHeight; 
-                if (pageYOffset >= (sectionTop - 300)) {
-                    current = section.getAttribute('id');
-                }
+                if (pageYOffset >= (section.offsetTop - 300)) current = section.getAttribute('id');
             });
             navLinks.forEach(link => {
                 link.classList.remove('active');
-                if (link.getAttribute('href').includes(current)) {
-                    link.classList.add('active');
-                }
+                if (link.getAttribute('href').includes(current)) link.classList.add('active');
             });
         });
         window.dispatchEvent(new Event('scroll'));
-    </script>
 
-    <script>
+        // 叶子生成
         document.addEventListener('DOMContentLoaded', () => {
             const container = document.getElementById('leaf-container');
-            const numLeaves = 30; // 叶子数量，可以自己调整
-            
-            // 定义几种符合主题的叶子颜色 (抹茶绿, 金色, 浅橄榄绿, 深苔藓绿)
             const leafColors = ['var(--main-red)', 'var(--gold-accent)', '#8a9a5b', '#72804d'];
-
-            for (let i = 0; i < numLeaves; i++) {
+            for (let i = 0; i < 30; i++) {
                 const leaf = document.createElement('i');
-                // 使用 Font Awesome 的叶子图标样式
                 leaf.classList.add('fas', 'fa-leaf', 'falling-leaf');
-
-                // --- 随机化样式 ---
-                
-                // 1. 随机水平起始位置 (0% 到 100%)
                 leaf.style.left = `${Math.random() * 100}%`;
-                
-                // 2. 随机颜色
                 leaf.style.color = leafColors[Math.floor(Math.random() * leafColors.length)];
-                
-                // 3. 随机大小 (15px 到 35px)
                 const size = Math.random() * 20 + 15;
                 leaf.style.fontSize = `${size}px`;
-                
-                // 4. 随机下落速度和摇摆速度 (15秒 到 30秒之间)
-                // 我们把两个动画的时长设为稍有不同，让运动轨迹更随机
                 const durationFall = Math.random() * 15 + 15; 
                 const durationSway = Math.random() * 10 + 10;
                 leaf.style.animationDuration = `${durationFall}s, ${durationSway}s`;
-
-                // 5. 随机动画延迟 (让它们在不同时间开始飘落，而不是同时开始)
-                // 使用负延迟可以让动画在页面加载时就已经处于中途状态
                 const delay = -(Math.random() * 30);
                 leaf.style.animationDelay = `${delay}s, ${delay}s`;
-
                 container.appendChild(leaf);
             }
         });
+
+        // 弹窗控制逻辑
+        const modal = document.getElementById('hobbyModal');
+        const modalImg = document.getElementById('modalImg');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDesc = document.getElementById('modalDesc');
+
+        function openModal(card) {
+            const hiddenContent = card.querySelector('.hidden-content');
+            if (!hiddenContent) return;
+            modalTitle.innerHTML = hiddenContent.querySelector('.full-title').innerHTML;
+            modalDesc.innerHTML = hiddenContent.querySelector('.full-desc').innerHTML;
+            modalImg.src = hiddenContent.querySelector('.full-img').src;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(event) {
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
     </script>
 </body>
 </html>
