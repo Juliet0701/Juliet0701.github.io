@@ -500,52 +500,43 @@
         // 叶子生成
         document.addEventListener('DOMContentLoaded', () => {
             const container = document.getElementById('leaf-container');
-            const numLeaves = 35; // 稍微增加一点数量
+            const numLeaves = 25; // 数量不用太多，保持清爽
             
-            // 1. 定义叶子颜色 (抹茶绿, 金色, 浅橄榄绿, 深苔藓绿)
+            // 颜色：抹茶绿、金色、深橄榄、浅茶色
             const leafColors = ['var(--main-red)', 'var(--gold-accent)', '#8a9a5b', '#72804d'];
             
-            // 2. 🔥 新增：定义多种图标形状 (普通叶子, 枫叶, 幼苗, 花朵, 四叶草)
+            // 筛选后的精美图标：普通叶子、四叶草、细长叶子(羽毛代替)
             const leafIcons = [
-                'fa-leaf',                  // 普通叶子
-                'fa-canadian-maple-leaf',   // 枫叶 (形状很有张力)
-                'fa-seedling',              // 幼苗 (很可爱)
-                'fa-spa',                   // 莲花/花瓣 (很典雅)
-                'fa-clover'                 // 四叶草
+                'fa-leaf',      // 经典叶子
+                'fa-clover',    // 四叶草 (小彩蛋)
+                'fa-feather'    // 羽毛 (看起来像细长的茶叶/柳叶，非常飘逸)
             ];
 
             for (let i = 0; i < numLeaves; i++) {
                 const leaf = document.createElement('i');
                 
-                // 随机选择一个图标形状
                 const randomIcon = leafIcons[Math.floor(Math.random() * leafIcons.length)];
-                
-                // 添加基础类名 + 随机图标类名
                 leaf.classList.add('fas', randomIcon, 'falling-leaf');
 
-                // --- 随机化样式 ---
-                
-                // 随机水平位置
+                // --- 随机化参数 ---
                 leaf.style.left = `${Math.random() * 100}%`;
-                
-                // 随机颜色
                 leaf.style.color = leafColors[Math.floor(Math.random() * leafColors.length)];
                 
-                // 随机大小 (12px 到 30px，稍微改小一点点更精致)
-                const size = Math.random() * 18 + 12;
+                // 大小区间
+                const size = Math.random() * 15 + 10; 
                 leaf.style.fontSize = `${size}px`;
                 
-                // 随机下落和摇摆速度
-                const durationFall = Math.random() * 15 + 15; 
-                const durationSway = Math.random() * 10 + 10;
+                // 下落与摇摆动画
+                const durationFall = Math.random() * 10 + 20; // 20-30秒，慢一点更优雅
+                const durationSway = Math.random() * 5 + 5;
                 leaf.style.animationDuration = `${durationFall}s, ${durationSway}s`;
 
                 // 随机延迟
                 const delay = -(Math.random() * 30);
                 leaf.style.animationDelay = `${delay}s, ${delay}s`;
 
-                // 随机透明度 (让有些叶子看起来更远)
-                leaf.style.opacity = Math.random() * 0.5 + 0.3;
+                // 透明度：让它们看起来若隐若现，不要太抢眼
+                leaf.style.opacity = Math.random() * 0.4 + 0.2;
 
                 container.appendChild(leaf);
             }
