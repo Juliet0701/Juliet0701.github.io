@@ -3,69 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Li Hang - 典雅动态背景版</title>
+    <title>Li Hang - 抹茶典雅版</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
     <style>
-        /* --- 1. 配色方案 --- */
+        /* --- 1. 配色方案 (抹茶绿主题) --- */
         :root {
-            --main-red: #566c5b;   
-            --bg-cream: #fdfcf8;   
-            --text-dark: #5a4a42;  
-            --gold-accent: #cba258; 
+            --main-red: #566c5b;   /* 抹茶绿/苔色 */
+            --bg-cream: #fdfcf8;   /* 米色背景 */
+            --text-dark: #4a5d23;  /* 深橄榄绿文字，比纯黑更搭 */
+            --gold-accent: #cba258; /* 金色点缀 */
             --sidebar-width: 80px; 
         }
 
-        /* --- 🔥 新增：动态斜纹背景样式 --- */
-        .animated-bg {
-            position: fixed; /* 背景固定，让它充满整个窗口 */
+        /* --- 🔥 新增：飘落叶子的背景样式 🔥 --- */
+        #leaf-container {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1; /* 放在最底层，不挡住内容 */
-            
-            /* 粉色和米色交替的柔和条纹 */
-            background: repeating-linear-gradient(
-                45deg,
-                var(--bg-cream),
-                var(--bg-cream) 20px, /* 米色宽 20px */
-                #fff0f3 20px,         /* 极淡的粉色开始 */
-                #fff0f3 40px          /* 极淡的粉色结束，宽 20px */
-            );
-            
-            /* 放大背景尺寸，为了让它动起来时看不出边界 */
-            background-size: 200% 200%;
-            
-            /* 激活动画：60秒一次循环，极慢速流动 */
-            animation: gradientFlow 60s linear infinite;
+            z-index: -1; /* 放在最底层 */
+            overflow: hidden; /* 防止叶子飘出屏幕出现滚动条 */
+            pointer-events: none; /* 确保鼠标能穿透背景点击内容 */
         }
 
-        /* 背景流动的动画定义 */
-        @keyframes gradientFlow {
-            0% { background-position: 0% 0%; }
-            100% { background-position: 100% 100%; }
+        /* 单片叶子的基础样式 */
+        .falling-leaf {
+            position: absolute;
+            top: -10%; /* 初始位置在屏幕上方外面 */
+            opacity: 0; /* 初始透明 */
+            
+            /* 应用两个动画：一个负责垂直下落，一个负责水平摇摆 */
+            animation-name: verticalFall, horizontalSway;
+            /* 下落是线性的，摇摆是缓动的 */
+            animation-timing-function: linear, ease-in-out;
+            /* 无限循环 */
+            animation-iteration-count: infinite, infinite;
+            /* 动画时长和延迟将由 JS 动态设置 */
+        }
+
+        /* 动画1：垂直下落 */
+        @keyframes verticalFall {
+            0% { top: -10%; opacity: 0; }
+            10% { opacity: 0.8; } /* 进入屏幕后显现 */
+            90% { opacity: 0.8; } /* 快到底部时保持显现 */
+            100% { top: 110%; opacity: 0; } /* 掉出屏幕下方并消失 */
+        }
+
+        /* 动画2：水平摇摆和旋转 (模拟飘动感) */
+        @keyframes horizontalSway {
+            0% { transform: translateX(-30px) rotate(0deg); }
+            50% { transform: translateX(30px) rotate(180deg); }
+            100% { transform: translateX(-30px) rotate(360deg); }
         }
 
         /* --- 1. Body 设置 --- */
         body {
             margin: 0;
             font-family: 'Noto Serif SC', serif;
-            /* 背景色现在由 .animated-bg 接管，这里设透明或保留作为兜底 */
-            background-color: var(--bg-cream); 
+            background-color: var(--bg-cream);
             color: var(--text-dark);
-            
             position: relative; 
             min-height: 100vh; 
-            
-            /* 原来的静态花纹背景可以删掉了，因为有了动态背景 */
-            /* background-image: ... (已移除) */
-            
             overflow-x: hidden;
-
-            /* 内边距 */
             padding: 40px 120px 40px 40px; 
             box-sizing: border-box;
         }
@@ -77,6 +80,7 @@
             left: 0;
             bottom: 0;
             width: calc(100% - var(--sidebar-width)); 
+            /* 使用抹茶绿边框 */
             border: 15px solid var(--main-red);
             background: transparent;
             pointer-events: none; 
@@ -87,10 +91,7 @@
         .page-frame::after {
             content: '';
             position: absolute;
-            top: 6px; 
-            left: 6px; 
-            right: 6px; 
-            bottom: 6px;
+            top: 6px; left: 6px; right: 6px; bottom: 6px;
             border: 1px solid var(--main-red);
             opacity: 0.6;
         }
@@ -98,209 +99,70 @@
         /* --- 3. 右侧垂直导航栏 --- */
         .side-nav {
             position: fixed; 
-            top: 0;
-            right: 0;
+            top: 0; right: 0;
             width: var(--sidebar-width);
             height: 100vh;
+            /* 使用抹茶绿背景 */
             background-color: var(--main-red);
-            
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start; 
-            
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-start; 
             z-index: 1000;
             box-shadow: -2px 0 10px rgba(0,0,0,0.1);
             border-left: 2px solid #fff;
-            
-            padding-top: 60px;   
-            padding-bottom: 30px; 
+            padding-top: 60px; padding-bottom: 30px; 
             box-sizing: border-box;
         }
         
-        .nav-links { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 2.5rem; 
-            margin-top: 0; 
-            width: 100%;
-            align-items: center;
-        }
-
+        .nav-links { display: flex; flex-direction: column; gap: 2.5rem; margin-top: 0; width: 100%; align-items: center; }
         .side-nav a.menu-link {
-            text-decoration: none;
-            color: #fff;
-            font-family: 'Cinzel Decorative', serif;
-            font-size: 1.1rem;
-            font-weight: bold;
-            writing-mode: vertical-rl;
-            text-orientation: mixed;
-            letter-spacing: 3px;
-            transition: all 0.3s;
-            opacity: 0.8;
-            padding: 10px 0;
-            border-right: 2px solid transparent;
-            position: relative;
+            text-decoration: none; color: #fff; font-family: 'Cinzel Decorative', serif; font-size: 1.1rem; font-weight: bold; writing-mode: vertical-rl; text-orientation: mixed; letter-spacing: 3px; transition: all 0.3s; opacity: 0.8; padding: 10px 0; border-right: 2px solid transparent; position: relative;
         }
-        
         .side-nav a.menu-link::after {
-            content: '';
-            position: absolute;
-            left: -12px; 
-            top: 0;
-            width: 2px; 
-            height: 0%; 
-            background-color: #fff;
-            box-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
-            transition: height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            bottom: 0;
-            margin: auto 0;
+            content: ''; position: absolute; left: -12px; top: 0; width: 2px; height: 0%; background-color: #fff; box-shadow: 0 0 8px rgba(255, 255, 255, 0.9); transition: height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); bottom: 0; margin: auto 0;
         }
         .side-nav a.menu-link:hover { opacity: 1; transform: scale(1.1); text-shadow: 0 0 5px rgba(255,255,255,0.8); }
-        .side-nav a.menu-link.active {
-            color: #fff !important;
-            opacity: 1;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); 
-        }
+        .side-nav a.menu-link.active { color: #fff !important; opacity: 1; text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
         .side-nav a.menu-link.active::after { height: 100%; }
-
-        .social-links {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px; 
-            margin-top: auto; 
-            z-index: 1001; 
-        }
-        
-        .social-btn {
-            color: #fff;
-            font-size: 1.1rem; 
-            text-decoration: none;
-            transition: all 0.3s;
-            opacity: 0.8;
-            display: block; 
-        }
-        
-        .social-btn:hover {
-            opacity: 1;
-            transform: scale(1.2); 
-            color: var(--gold-accent);
-        }
+        .social-links { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: auto; z-index: 1001; }
+        .social-btn { color: #fff; font-size: 1.1rem; text-decoration: none; transition: all 0.3s; opacity: 0.8; display: block; }
+        .social-btn:hover { opacity: 1; transform: scale(1.2); color: var(--gold-accent); }
 
         /* --- 4. 内容布局 --- */
-        .container { 
-            max-width: 1000px; 
-            margin: 0 auto; 
-            padding: 0; 
-        }
-
+        .container { max-width: 1000px; margin: 0 auto; padding: 0; }
+        /* 标题颜色自动变为抹茶绿 */
         .section-header { text-align: center; margin-bottom: 4rem; position: relative; padding: 2rem 0; }
         .section-header h2 { font-size: 2.5rem; color: var(--main-red); font-family: 'Cinzel Decorative', serif; margin: 0; }
         .section-header::after { content: '☘'; font-size: 2rem; color: var(--gold-accent); display: block; margin-top: 10px; }
 
         /* Hero */
         .hero { height: 90vh; display: flex; align-items: center; justify-content: center; position: relative; }
-        .hero-card {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 4rem;
-            border: 2px solid var(--main-red);
-            text-align: center;
-            box-shadow: 10px 10px 0px rgba(232, 90, 113, 0.2);
-            max-width: 600px;
-        }
+        /* Hero卡片边框自动变色 */
+        .hero-card { background: rgba(255, 255, 255, 0.9); padding: 4rem; border: 2px solid var(--main-red); text-align: center; box-shadow: 10px 10px 0px rgba(86, 108, 91, 0.2); max-width: 600px; }
         .hero h1 { font-size: 3.5rem; margin: 0; color: var(--main-red); }
 
         /* 九宫格 */
         .grid-section { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
         .card { background: #fff; padding: 1rem; border: 1px solid var(--gold-accent); text-align: center; transition: transform 0.3s; }
         .card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .card img { width: 100%; height: 180px; object-fit: cover; margin-bottom: 10px; }
+        /* 图片占位符颜色调整 (仅用于演示，实际换成你的图片后不影响) */
+        .card img { width: 100%; height: 180px; object-fit: cover; margin-bottom: 10px; background-color: #eceadd; }
         .card h3 { color: var(--main-red); margin: 0.5rem 0; font-size: 1.1rem; }
         .card p { font-size: 0.85rem; color: #888; margin: 0; }
 
-        /* --- 带照片的时间轴 CSS --- */
-        .timeline-container {
-            position: relative;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px 0;
-            border-left: none; 
-            margin-left: 0; 
-        }
-        .timeline-container::after {
-            content: '';
-            position: absolute;
-            width: 3px;
-            background-color: rgba(232, 90, 113, 0.3);
-            top: 0;
-            bottom: 0;
-            left: 50%;
-            margin-left: -1px;
-        }
-
-        .timeline-row {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 80px;
-            position: relative;
-        }
-
-        .timeline-image-box {
-            width: 45%;
-            padding-right: 40px;
-            text-align: right;
-            position: relative;
-        }
-        .timeline-photo {
-            width: 220px;
-            height: 160px;
-            object-fit: cover;
-            border-radius: 12px;
-            border: 4px solid #fff;
-            box-shadow: 0 10px 25px rgba(232, 90, 113, 0.25);
-            transform: rotate(-3deg);
-            transition: all 0.4s ease;
-        }
-        .timeline-row:hover .timeline-photo {
-            transform: rotate(0deg) scale(1.05);
-            box-shadow: 0 15px 35px rgba(232, 90, 113, 0.4);
-        }
-
-        .timeline-dot {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: #fff;
-            border: 5px solid var(--main-red);
-            z-index: 2;
-            box-shadow: 0 0 0 4px rgba(255,255,255,0.8);
-        }
-        .timeline-dot.current {
-            background: var(--main-red);
-            box-shadow: 0 0 0 4px rgba(232, 90, 113, 0.3);
-        }
-
-        .timeline-content-box {
-            width: 45%;
-            padding-left: 40px;
-            text-align: left;
-        }
-        .year-badge { 
-            background: var(--main-red); 
-            color: white; 
-            padding: 4px 15px; 
-            border-radius: 20px; 
-            font-size: 0.85rem; 
-            font-weight: bold; 
-            display: inline-block; 
-            margin-bottom: 15px; 
-            letter-spacing: 1px; 
-        }
+        /* --- 时间轴 CSS --- */
+        .timeline-container { position: relative; max-width: 1000px; margin: 0 auto; padding: 20px 0; }
+        /* 时间轴中线颜色 */
+        .timeline-container::after { content: ''; position: absolute; width: 3px; background-color: rgba(86, 108, 91, 0.3); top: 0; bottom: 0; left: 50%; margin-left: -1px; }
+        .timeline-row { display: flex; justify-content: center; align-items: center; margin-bottom: 80px; position: relative; }
+        .timeline-image-box { width: 45%; padding-right: 40px; text-align: right; position: relative; }
+        /* 照片阴影颜色 */
+        .timeline-photo { width: 220px; height: 160px; object-fit: cover; border-radius: 12px; border: 4px solid #fff; box-shadow: 0 10px 25px rgba(86, 108, 91, 0.25); transform: rotate(-3deg); transition: all 0.4s ease; background-color: #eceadd; }
+        .timeline-row:hover .timeline-photo { transform: rotate(0deg) scale(1.05); box-shadow: 0 15px 35px rgba(86, 108, 91, 0.4); }
+        /* 时间轴点颜色 */
+        .timeline-dot { position: absolute; left: 50%; transform: translateX(-50%); width: 24px; height: 24px; border-radius: 50%; background: #fff; border: 5px solid var(--main-red); z-index: 2; box-shadow: 0 0 0 4px rgba(255,255,255,0.8); }
+        .timeline-dot.current { background: var(--main-red); box-shadow: 0 0 0 4px rgba(86, 108, 91, 0.3); }
+        .timeline-content-box { width: 45%; padding-left: 40px; text-align: left; }
+        /* 年份标签颜色 */
+        .year-badge { background: var(--main-red); color: white; padding: 4px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; display: inline-block; margin-bottom: 15px; letter-spacing: 1px; }
         .timeline-content-box h3 { margin-top: 0; color: var(--text-dark); font-size: 1.5rem;}
         .timeline-content-box p { color: #777; line-height: 1.8; }
         
@@ -325,7 +187,7 @@
 </head>
 <body>
 
-    <div class="animated-bg"></div>
+    <div id="leaf-container"></div>
 
     <div class="page-frame"></div>
 
@@ -352,7 +214,7 @@
             <div class="hero-card" data-aos="zoom-out" data-aos-duration="1200">
                 <h1>Li Hang</h1>
                 <p style="font-style: italic; color: #888; margin-top: 10px;">The world is a book and those who do not travel read only one page.</p>
-                <div style="margin-top: 20px; font-size: 2rem; color: var(--main-red);">⚜</div>
+                <div style="margin-top: 20px; font-size: 2rem; color: var(--gold-accent);">🍃</div>
             </div>
         </section>
 
@@ -376,49 +238,40 @@
             </div>
             <div class="grid-section">
                 <div class="card" data-aos="fade-up" data-aos-delay="0">
-                    <img src="https://placehold.co/300x200/fcefe9/e85a71?text=1+Photo">
-                    <h3>摄影</h3>
-                    <p>记录瞬间</p>
+                    <img src="https://placehold.co/300x200/eceadd/566c5b?text=1+Photo">
+                    <h3>摄影</h3><p>记录瞬间</p>
                 </div>
                 <div class="card" data-aos="fade-up" data-aos-delay="100">
-                    <img src="https://placehold.co/300x200/fcefe9/e85a71?text=2+Code">
-                    <h3>编程</h3>
-                    <p>创造世界</p>
+                    <img src="https://placehold.co/300x200/eceadd/566c5b?text=2+Code">
+                    <h3>编程</h3><p>创造世界</p>
                 </div>
                 <div class="card" data-aos="fade-up" data-aos-delay="200">
-                    <img src="https://placehold.co/300x200/fcefe9/e85a71?text=3+Read">
-                    <h3>阅读</h3>
-                    <p>灵魂栖息</p>
+                    <img src="https://placehold.co/300x200/eceadd/566c5b?text=3+Read">
+                    <h3>阅读</h3><p>灵魂栖息</p>
                 </div>
                 <div class="card" data-aos="fade-up" data-aos-delay="300">
-                    <img src="https://placehold.co/300x200/fcefe9/e85a71?text=4+Movie">
-                    <h3>电影</h3>
-                    <p>光影梦境</p>
+                    <img src="https://placehold.co/300x200/eceadd/566c5b?text=4+Movie">
+                    <h3>电影</h3><p>光影梦境</p>
                 </div>
                 <div class="card" data-aos="fade-up" data-aos-delay="400">
-                    <img src="https://placehold.co/300x200/fcefe9/e85a71?text=5+Music">
-                    <h3>音乐</h3>
-                    <p>节奏律动</p>
+                    <img src="https://placehold.co/300x200/eceadd/566c5b?text=5+Music">
+                    <h3>音乐</h3><p>节奏律动</p>
                 </div>
                 <div class="card" data-aos="fade-up" data-aos-delay="500">
-                    <img src="https://placehold.co/300x200/fcefe9/e85a71?text=6+Travel">
-                    <h3>旅行</h3>
-                    <p>丈量土地</p>
+                    <img src="https://placehold.co/300x200/eceadd/566c5b?text=6+Travel">
+                    <h3>旅行</h3><p>丈量土地</p>
                 </div>
                 <div class="card" data-aos="fade-up" data-aos-delay="600">
-                    <img src="https://placehold.co/300x200/fcefe9/e85a71?text=7+Game">
-                    <h3>游戏</h3>
-                    <p>第九艺术</p>
+                    <img src="https://placehold.co/300x200/eceadd/566c5b?text=7+Game">
+                    <h3>游戏</h3><p>第九艺术</p>
                 </div>
                 <div class="card" data-aos="fade-up" data-aos-delay="700">
-                    <img src="https://placehold.co/300x200/fcefe9/e85a71?text=8+Cook">
-                    <h3>烹饪</h3>
-                    <p>生活烟火</p>
+                    <img src="https://placehold.co/300x200/eceadd/566c5b?text=8+Cook">
+                    <h3>烹饪</h3><p>生活烟火</p>
                 </div>
                 <div class="card" data-aos="fade-up" data-aos-delay="800">
-                    <img src="https://placehold.co/300x200/fcefe9/e85a71?text=9+Sleep">
-                    <h3>放空</h3>
-                    <p>充电时刻</p>
+                    <img src="https://placehold.co/300x200/eceadd/566c5b?text=9+Sleep">
+                    <h3>放空</h3><p>充电时刻</p>
                 </div>
             </div>
         </section>
@@ -429,10 +282,9 @@
             </div>
             
             <div class="timeline-container">
-                
                 <div class="timeline-row">
                     <div class="timeline-image-box" data-aos="fade-right" data-aos-delay="0">
-                        <img src="https://placehold.co/400x300/e85a71/ffffff?text=College+Photo" alt="大学照片" class="timeline-photo">
+                        <img src="https://placehold.co/400x300/566c5b/ffffff?text=College+Photo" alt="大学照片" class="timeline-photo">
                     </div>
                     <div class="timeline-dot current" data-aos="zoom-in" data-aos-delay="100"></div>
                     <div class="timeline-content-box" data-aos="fade-left" data-aos-delay="200">
@@ -444,7 +296,7 @@
 
                 <div class="timeline-row">
                     <div class="timeline-image-box" data-aos="fade-right" data-aos-delay="100">
-                        <img src="https://placehold.co/400x300/fcefe9/e85a71?text=High+School" alt="高中照片" class="timeline-photo">
+                        <img src="https://placehold.co/400x300/eceadd/566c5b?text=High+School" alt="高中照片" class="timeline-photo">
                     </div>
                     <div class="timeline-dot" data-aos="zoom-in" data-aos-delay="200"></div>
                     <div class="timeline-content-box" data-aos="fade-left" data-aos-delay="300">
@@ -456,7 +308,7 @@
 
                 <div class="timeline-row">
                     <div class="timeline-image-box" data-aos="fade-right" data-aos-delay="200">
-                        <img src="https://placehold.co/400x300/fcefe9/e85a71?text=Middle+School" alt="少年照片" class="timeline-photo">
+                        <img src="https://placehold.co/400x300/eceadd/566c5b?text=Middle+School" alt="少年照片" class="timeline-photo">
                     </div>
                     <div class="timeline-dot" data-aos="zoom-in" data-aos-delay="300"></div>
                     <div class="timeline-content-box" data-aos="fade-left" data-aos-delay="400">
@@ -468,7 +320,7 @@
 
                 <div class="timeline-row">
                     <div class="timeline-image-box" data-aos="fade-right" data-aos-delay="300">
-                        <img src="https://placehold.co/400x300/fcefe9/e85a71?text=Childhood" alt="童年照片" class="timeline-photo">
+                        <img src="https://placehold.co/400x300/eceadd/566c5b?text=Childhood" alt="童年照片" class="timeline-photo">
                     </div>
                     <div class="timeline-dot" data-aos="zoom-in" data-aos-delay="400"></div>
                     <div class="timeline-content-box" data-aos="fade-left" data-aos-delay="500">
@@ -494,21 +346,18 @@
     </script>
 
     <script>
+        // 滚动监听脚本 (Scroll Spy)
         const sections = document.querySelectorAll('section[id]');
         const navLinks = document.querySelectorAll('.side-nav .menu-link');
-    
         window.addEventListener('scroll', () => {
             let current = '';
-            
             sections.forEach(section => {
                 const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                
+                // const sectionHeight = section.clientHeight; 
                 if (pageYOffset >= (sectionTop - 300)) {
                     current = section.getAttribute('id');
                 }
             });
-    
             navLinks.forEach(link => {
                 link.classList.remove('active');
                 if (link.getAttribute('href').includes(current)) {
@@ -516,8 +365,48 @@
                 }
             });
         });
-        
         window.dispatchEvent(new Event('scroll'));
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('leaf-container');
+            const numLeaves = 30; // 叶子数量，可以自己调整
+            
+            // 定义几种符合主题的叶子颜色 (抹茶绿, 金色, 浅橄榄绿, 深苔藓绿)
+            const leafColors = ['var(--main-red)', 'var(--gold-accent)', '#8a9a5b', '#72804d'];
+
+            for (let i = 0; i < numLeaves; i++) {
+                const leaf = document.createElement('i');
+                // 使用 Font Awesome 的叶子图标样式
+                leaf.classList.add('fas', 'fa-leaf', 'falling-leaf');
+
+                // --- 随机化样式 ---
+                
+                // 1. 随机水平起始位置 (0% 到 100%)
+                leaf.style.left = `${Math.random() * 100}%`;
+                
+                // 2. 随机颜色
+                leaf.style.color = leafColors[Math.floor(Math.random() * leafColors.length)];
+                
+                // 3. 随机大小 (15px 到 35px)
+                const size = Math.random() * 20 + 15;
+                leaf.style.fontSize = `${size}px`;
+                
+                // 4. 随机下落速度和摇摆速度 (15秒 到 30秒之间)
+                // 我们把两个动画的时长设为稍有不同，让运动轨迹更随机
+                const durationFall = Math.random() * 15 + 15; 
+                const durationSway = Math.random() * 10 + 10;
+                leaf.style.animationDuration = `${durationFall}s, ${durationSway}s`;
+
+                // 5. 随机动画延迟 (让它们在不同时间开始飘落，而不是同时开始)
+                // 使用负延迟可以让动画在页面加载时就已经处于中途状态
+                const delay = -(Math.random() * 30);
+                leaf.style.animationDelay = `${delay}s, ${delay}s`;
+
+                container.appendChild(leaf);
+            }
+        });
     </script>
 </body>
 </html>
