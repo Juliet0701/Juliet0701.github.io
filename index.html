@@ -27,26 +27,23 @@
             position: relative; 
             min-height: 100vh; 
             overflow-x: hidden;
-            /* 给边框留出位置 */
             padding: 40px 120px 40px 40px; 
             box-sizing: border-box;
             transition: all 0.5s ease;
-            
-            /* 背景纹理 (点状) */
             background-image: 
                 radial-gradient(var(--main-red) 1px, transparent 1px),
                 radial-gradient(var(--main-red) 1px, transparent 1px);
             background-size: 40px 40px;
             background-position: 0 0, 20px 20px;
             background-blend-mode: overlay; 
-            opacity: 0.8; /* 让纹理淡一点 */
+            opacity: 0.8;
         }
 
         /* --- 3. 飘落叶子容器 --- */
         #leaf-container {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 0; /* 在背景之上，内容之下 */
+            z-index: 0;
             overflow: hidden; 
             pointer-events: none; 
         }
@@ -69,7 +66,7 @@
             100% { transform: translateX(-30px) rotate(360deg); }
         }
 
-        /* --- 4. 双重相框 (文档模式) --- */
+        /* --- 4. 双重相框 --- */
         .page-frame {
             position: absolute;
             top: 0; left: 0; bottom: 0;
@@ -238,12 +235,24 @@
                 <div class="card" onclick="openModal(this)" data-aos="fade-up"><img src="https://placehold.co/300x200/eceadd/566c5b?text=3+Read"><h3>阅读</h3><p>灵魂栖息</p>
                     <div class="hidden-content" style="display:none;"><div class="full-title">阅读</div><div class="full-desc">详细内容...</div><img class="full-img" src="https://placehold.co/600x400/eceadd/566c5b?text=Read"></div>
                 </div>
-                <div class="card" data-aos="fade-up"><img src="https://placehold.co/300x200/eceadd/566c5b?text=4"><h3>电影</h3><p>光影梦境</p></div>
-                <div class="card" data-aos="fade-up"><img src="https://placehold.co/300x200/eceadd/566c5b?text=5"><h3>音乐</h3><p>节奏律动</p></div>
-                <div class="card" data-aos="fade-up"><img src="https://placehold.co/300x200/eceadd/566c5b?text=6"><h3>旅行</h3><p>丈量土地</p></div>
-                <div class="card" data-aos="fade-up"><img src="https://placehold.co/300x200/eceadd/566c5b?text=7"><h3>游戏</h3><p>第九艺术</p></div>
-                <div class="card" data-aos="fade-up"><img src="https://placehold.co/300x200/eceadd/566c5b?text=8"><h3>烹饪</h3><p>生活烟火</p></div>
-                <div class="card" data-aos="fade-up"><img src="https://placehold.co/300x200/eceadd/566c5b?text=9"><h3>放空</h3><p>充电时刻</p></div>
+                <div class="card" onclick="openModal(this)" data-aos="fade-up"><img src="https://placehold.co/300x200/eceadd/566c5b?text=4+Movie"><h3>电影</h3><p>光影梦境</p>
+                    <div class="hidden-content" style="display:none;"><div class="full-title">电影</div><div class="full-desc">造梦之旅...</div><img class="full-img" src="https://placehold.co/600x400/eceadd/566c5b?text=Movie"></div>
+                </div>
+                <div class="card" onclick="openModal(this)" data-aos="fade-up"><img src="https://placehold.co/300x200/eceadd/566c5b?text=5+Music"><h3>音乐</h3><p>节奏律动</p>
+                    <div class="hidden-content" style="display:none;"><div class="full-title">音乐</div><div class="full-desc">情绪避难所...</div><img class="full-img" src="https://placehold.co/600x400/eceadd/566c5b?text=Music"></div>
+                </div>
+                <div class="card" onclick="openModal(this)" data-aos="fade-up"><img src="https://placehold.co/300x200/eceadd/566c5b?text=6+Travel"><h3>旅行</h3><p>丈量土地</p>
+                    <div class="hidden-content" style="display:none;"><div class="full-title">旅行</div><div class="full-desc">看陌生风景...</div><img class="full-img" src="https://placehold.co/600x400/eceadd/566c5b?text=Travel"></div>
+                </div>
+                <div class="card" onclick="openModal(this)" data-aos="fade-up"><img src="https://placehold.co/300x200/eceadd/566c5b?text=7+Game"><h3>游戏</h3><p>第九艺术</p>
+                    <div class="hidden-content" style="display:none;"><div class="full-title">游戏</div><div class="full-desc">思维训练...</div><img class="full-img" src="https://placehold.co/600x400/eceadd/566c5b?text=Game"></div>
+                </div>
+                <div class="card" onclick="openModal(this)" data-aos="fade-up"><img src="https://placehold.co/300x200/eceadd/566c5b?text=8+Cook"><h3>烹饪</h3><p>生活烟火</p>
+                    <div class="hidden-content" style="display:none;"><div class="full-title">烹饪</div><div class="full-desc">爱与美食...</div><img class="full-img" src="https://placehold.co/600x400/eceadd/566c5b?text=Cook"></div>
+                </div>
+                <div class="card" onclick="openModal(this)" data-aos="fade-up"><img src="https://placehold.co/300x200/eceadd/566c5b?text=9+Sleep"><h3>放空</h3><p>充电时刻</p>
+                    <div class="hidden-content" style="display:none;"><div class="full-title">放空</div><div class="full-desc">让大脑休息...</div><img class="full-img" src="https://placehold.co/600x400/eceadd/566c5b?text=Sleep"></div>
+                </div>
             </div>
         </section>
 
@@ -299,7 +308,7 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // 1. 初始化动画 (放在最前面)
+        // 1. 初始化动画
         AOS.init({ offset: 120, duration: 800, easing: 'ease-out-quad', once: false, mirror: true });
         
         // 2. 滚动监听
@@ -343,13 +352,13 @@
 
             // 👇 测试春天的改法 (3月，填 2)：
             // const month = 2; 
-            
+
             // 👇 测试夏天的改法 (7月，填 6)：
-            // const month = 6; 
-            
+             const month = 6;          
+
             // 👇 测试秋天的改法 (10月，填 9)：
-             const month = 9; 
-            
+            // const month = 9; 
+
             // 👇 测试冬天的改法 (12月，填 11)：
             // const month = 11;
             
@@ -364,7 +373,6 @@
                     mainRed: '#7fb80e',   // 嫩芽绿
                     textDark: '#4a5d23',  // 深草绿
                     iconClass: 'fa-seedling', 
-                    // 春天掉落物：幼苗，四叶草，普通叶子
                     fallingIcons: ['fa-seedling', 'fa-leaf', 'fa-clover'], 
                     leafColors: ['#7fb80e', '#cba258', '#90d743']
                 },
@@ -372,7 +380,8 @@
                     mainRed: '#f0a500',   // 向日葵黄
                     textDark: '#8B4500',  // 深橙褐色
                     iconClass: 'fa-sun',
-                    fallingIcons: ['fa-volleyball', 'fa-umbrella-beach', 'fa-ice-cream'],
+                    // 🔥 修改：把遮阳伞改成了羽毛球 (用 feather-pointed 模拟)
+                    fallingIcons: ['fa-volleyball', 'fa-feather-pointed', 'fa-ice-cream'],
                     leafColors: ['#f0a500', '#ffeb3b', '#29b6f6', '#ff5722']
                 },
                 autumn: {
@@ -398,14 +407,14 @@
             root.style.setProperty('--main-red', currentTheme.mainRed);
             root.style.setProperty('--text-dark', currentTheme.textDark);
 
-            // 换图标 (安全检查：防止找不到ID报错)
+            // 换图标
             const heroIcon = document.getElementById('season-icon');
             if(heroIcon) {
                 heroIcon.className = ''; 
                 heroIcon.classList.add('fas', currentTheme.iconClass);
             }
 
-            // 生成掉落物 (安全检查)
+            // 生成掉落物
             const container = document.getElementById('leaf-container');
             if(container) {
                 const numLeaves = 30;
@@ -427,7 +436,7 @@
                     container.appendChild(leaf);
                 }
             } else {
-                console.error("Leaf container not found!"); // 调试信息
+                console.error("Leaf container not found!"); 
             }
         });
     </script>
