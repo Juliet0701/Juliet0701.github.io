@@ -3,27 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Li Hang - 四季典雅版</title>
+    <title>Li Hang - 四季典雅终极版</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
     <style>
-        /* --- 1. 配色方案 (CSS变量作为默认值，JS会覆盖它们) --- */
+        /* --- 1. 配色方案 (默认值) --- */
         :root {
-            /* 默认值 (Spring) */
-            --main-red: #7fb80e;   /* 嫩芽绿 (比之前的抹茶更鲜艳) */
+            --main-red: #566c5b;   
             --bg-cream: #fdfcf8;   
             --text-dark: #4a5d23;  
             --gold-accent: #cba258; 
             --sidebar-width: 80px; 
         }
 
-        /* --- 飘落背景样式 --- */
+        /* --- 2. 飘落叶子容器 (层级修复) --- */
         #leaf-container {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; 
+            /* 关键修复：改为 0，避免被 body 背景盖住 */
+            z-index: 0; 
             overflow: hidden; 
             pointer-events: none; 
         }
@@ -46,7 +46,7 @@
             100% { transform: translateX(-30px) rotate(360deg); }
         }
 
-        /* --- Body --- */
+        /* --- 3. Body 设置 --- */
         body {
             margin: 0;
             font-family: 'Noto Serif SC', serif;
@@ -57,10 +57,17 @@
             overflow-x: hidden;
             padding: 40px 120px 40px 40px; 
             box-sizing: border-box;
-            transition: color 0.5s ease; /* 颜色切换时的过渡 */
+            transition: all 0.5s ease;
         }
 
-        /* --- 双重相框 --- */
+        /* --- 4. 内容层级提升 --- */
+        /* 关键：让内容浮在叶子上面 */
+        .container, .side-nav, .page-frame {
+            position: relative;
+            z-index: 2; 
+        }
+
+        /* --- 5. 双重相框 (Absolute) --- */
         .page-frame {
             position: absolute;
             top: 0; left: 0; bottom: 0;
@@ -68,7 +75,7 @@
             border: 15px solid var(--main-red);
             background: transparent;
             pointer-events: none; 
-            z-index: 990; 
+            z-index: 990; /* 这里的 z-index 很高，保证框在最上面 */
             box-sizing: border-box;
             transition: border-color 0.5s ease;
         }
@@ -81,7 +88,7 @@
             transition: border-color 0.5s ease;
         }
 
-        /* --- 侧边栏 --- */
+        /* --- 6. 侧边栏 --- */
         .side-nav {
             position: fixed; 
             top: 0; right: 0;
@@ -105,12 +112,11 @@
         .side-nav a.menu-link:hover { opacity: 1; transform: scale(1.1); text-shadow: 0 0 5px rgba(255,255,255,0.8); }
         .side-nav a.menu-link.active { color: #fff !important; opacity: 1; text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
         .side-nav a.menu-link.active::after { height: 100%; }
-        
         .social-links { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: auto; z-index: 1001; }
         .social-btn { color: #fff; font-size: 1.1rem; text-decoration: none; transition: all 0.3s; opacity: 0.8; display: block; }
         .social-btn:hover { opacity: 1; transform: scale(1.2); color: #ffffff; text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6);}
 
-        /* --- 内容 --- */
+        /* --- 7. 内容布局 --- */
         .container { max-width: 1000px; margin: 0 auto; padding: 0; }
         .section-header { text-align: center; margin-bottom: 4rem; position: relative; padding: 2rem 0; }
         .section-header h2 { font-size: 2.5rem; color: var(--main-red); font-family: 'Cinzel Decorative', serif; margin: 0; transition: color 0.5s ease;}
@@ -179,6 +185,7 @@
 <body>
 
     <div id="leaf-container"></div>
+    
     <div class="page-frame"></div>
 
     <nav class="side-nav">
@@ -189,8 +196,8 @@
             <a href="#story" class="menu-link">Story</a>
         </div>
         <div class="social-links">
-            <a href="https://facebook.com/你的账号" target="_blank" class="social-btn"><i class="fab fa-facebook-f"></i></a>
-            <a href="https://instagram.com/你的账号" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a>
+            <a href="https://facebook.com/" target="_blank" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://instagram.com/" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a>
         </div>
     </nav>
 
@@ -199,234 +206,147 @@
             <div class="hero-card" data-aos="zoom-out" data-aos-duration="1200">
                 <h1>Li Hang</h1>
                 <p style="font-style: italic; color: #888; margin-top: 10px;">The world is a book and those who do not travel read only one page.</p>
+                
                 <div style="margin-top: 20px; font-size: 2rem; color: var(--gold-accent);">
-                    <i id="season-icon" class="fas fa-leaf"></i> </div>
+                    <i id="season-icon" class="fas fa-leaf"></i> 
+                </div>
             </div>
         </section>
 
         <section id="about" style="margin-bottom: 100px;">
-            <div class="section-header" data-aos="fade-up">
-                <h2>Introduction</h2>
-            </div>
+            <div class="section-header" data-aos="fade-up"><h2>Introduction</h2></div>
             <div style="background: rgba(255, 255, 255, 0.95); padding: 3rem; border-left: 5px solid var(--main-red);" data-aos="fade-left">
                 <p style="font-size: 1.1rem; line-height: 2;">
-                    你好，这里是 Li Hang。<br>
-                    在这个小小的数字花园里，我种下了9种热爱，也记录了从孩童到成年的4段旅程。欢迎你的来访。
+                    你好，这里是 Li Hang。<br>在这个小小的数字花园里，我种下了9种热爱，也记录了从孩童到成年的4段旅程。欢迎你的来访。
                 </p>
             </div>
         </section>
 
         <section id="hobby" style="margin-bottom: 100px;">
-            <div class="section-header" data-aos="fade-up">
-                <h2>My 9 Hobbies</h2>
-            </div>
+            <div class="section-header" data-aos="fade-up"><h2>My 9 Hobbies</h2></div>
             <div class="grid-section">
-                
                 <div class="card" onclick="openModal(this)" data-aos="fade-up" data-aos-delay="0">
                     <img src="https://placehold.co/300x200/eceadd/566c5b?text=1+Photo">
                     <h3>摄影</h3><p>记录瞬间</p>
                     <div class="hidden-content" style="display:none;">
                         <div class="full-title">摄影 Photography</div>
-                        <div class="full-desc">
-                            我喜欢带着相机穿梭在城市的街头巷尾。<br><br>
-                            快门按下的那一刻，时间仿佛静止。
-                        </div>
+                        <div class="full-desc">这里写关于摄影的详细故事...</div>
                         <img class="full-img" src="https://placehold.co/600x400/eceadd/566c5b?text=Photo+Detail">
                     </div>
                 </div>
-
                 <div class="card" onclick="openModal(this)" data-aos="fade-up" data-aos-delay="100">
                     <img src="https://placehold.co/300x200/eceadd/566c5b?text=2+Code">
                     <h3>编程</h3><p>创造世界</p>
                     <div class="hidden-content" style="display:none;">
-                        <div class="full-title">编程 Coding</div>
-                        <div class="full-desc">
-                            代码构建世界的乐趣。<br><br>
-                            这是逻辑与创造力的完美结合。
-                        </div>
+                        <div class="full-title">编程 Coding</div><div class="full-desc">逻辑与创造力...</div>
                         <img class="full-img" src="https://placehold.co/600x400/eceadd/566c5b?text=Code+Detail">
                     </div>
                 </div>
-
                 <div class="card" onclick="openModal(this)" data-aos="fade-up" data-aos-delay="200">
                     <img src="https://placehold.co/300x200/eceadd/566c5b?text=3+Read">
                     <h3>阅读</h3><p>灵魂栖息</p>
                     <div class="hidden-content" style="display:none;">
-                        <div class="full-title">阅读 Reading</div>
-                        <div class="full-desc">
-                            书籍是灵魂的避难所。<br><br>
-                            最近在读的书是《...》。
-                        </div>
+                        <div class="full-title">阅读 Reading</div><div class="full-desc">感受角色情感...</div>
                         <img class="full-img" src="https://placehold.co/600x400/eceadd/566c5b?text=Read+Detail">
                     </div>
                 </div>
-
                 <div class="card" onclick="openModal(this)" data-aos="fade-up" data-aos-delay="300">
                     <img src="https://placehold.co/300x200/eceadd/566c5b?text=4+Movie">
                     <h3>电影</h3><p>光影梦境</p>
                     <div class="hidden-content" style="display:none;">
-                        <div class="full-title">电影 Movies</div>
-                        <div class="full-desc">
-                            沉浸在两小时的造梦之旅中。<br><br>
-                            最喜欢的电影导演是...
-                        </div>
+                        <div class="full-title">电影 Movies</div><div class="full-desc">造梦之旅...</div>
                         <img class="full-img" src="https://placehold.co/600x400/eceadd/566c5b?text=Movie+Detail">
                     </div>
                 </div>
-
                 <div class="card" onclick="openModal(this)" data-aos="fade-up" data-aos-delay="400">
                     <img src="https://placehold.co/300x200/eceadd/566c5b?text=5+Music">
                     <h3>音乐</h3><p>节奏律动</p>
                     <div class="hidden-content" style="display:none;">
-                        <div class="full-title">音乐 Music</div>
-                        <div class="full-desc">
-                            耳机一戴，谁也不爱。<br><br>
-                            偏爱 J-Pop 和古典乐。
-                        </div>
+                        <div class="full-title">音乐 Music</div><div class="full-desc">情绪避难所...</div>
                         <img class="full-img" src="https://placehold.co/600x400/eceadd/566c5b?text=Music+Detail">
                     </div>
                 </div>
-
                 <div class="card" onclick="openModal(this)" data-aos="fade-up" data-aos-delay="500">
                     <img src="https://placehold.co/300x200/eceadd/566c5b?text=6+Travel">
                     <h3>旅行</h3><p>丈量土地</p>
                     <div class="hidden-content" style="display:none;">
-                        <div class="full-title">旅行 Travel</div>
-                        <div class="full-desc">
-                            去陌生的地方，看陌生的风景。<br><br>
-                            下一站想去...
-                        </div>
+                        <div class="full-title">旅行 Travel</div><div class="full-desc">看陌生风景...</div>
                         <img class="full-img" src="https://placehold.co/600x400/eceadd/566c5b?text=Travel+Detail">
                     </div>
                 </div>
-
                 <div class="card" onclick="openModal(this)" data-aos="fade-up" data-aos-delay="600">
                     <img src="https://placehold.co/300x200/eceadd/566c5b?text=7+Game">
                     <h3>游戏</h3><p>第九艺术</p>
                     <div class="hidden-content" style="display:none;">
-                        <div class="full-title">游戏 Games</div>
-                        <div class="full-desc">
-                            玩手游不仅仅是娱乐，更是思维的训练。<br><br>
-                            Getting serious with games.
-                        </div>
+                        <div class="full-title">游戏 Games</div><div class="full-desc">思维训练...</div>
                         <img class="full-img" src="https://placehold.co/600x400/eceadd/566c5b?text=Game+Detail">
                     </div>
                 </div>
-
                 <div class="card" onclick="openModal(this)" data-aos="fade-up" data-aos-delay="700">
                     <img src="https://placehold.co/300x200/eceadd/566c5b?text=8+Cook">
                     <h3>烹饪</h3><p>生活烟火</p>
                     <div class="hidden-content" style="display:none;">
-                        <div class="full-title">烹饪 Cooking</div>
-                        <div class="full-desc">
-                            唯有爱与美食不可辜负。<br><br>
-                            享受食材在锅中变化的奇妙过程。
-                        </div>
+                        <div class="full-title">烹饪 Cooking</div><div class="full-desc">爱与美食...</div>
                         <img class="full-img" src="https://placehold.co/600x400/eceadd/566c5b?text=Cook+Detail">
                     </div>
                 </div>
-
                 <div class="card" onclick="openModal(this)" data-aos="fade-up" data-aos-delay="800">
                     <img src="https://placehold.co/300x200/eceadd/566c5b?text=9+Sleep">
                     <h3>放空</h3><p>充电时刻</p>
                     <div class="hidden-content" style="display:none;">
-                        <div class="full-title">放空 Zoning Out</div>
-                        <div class="full-desc">
-                            偶尔什么都不做，也是一种极其重要的事情。<br><br>
-                            Let it go.
-                        </div>
+                        <div class="full-title">放空 Zoning Out</div><div class="full-desc">让大脑休息...</div>
                         <img class="full-img" src="https://placehold.co/600x400/eceadd/566c5b?text=Sleep+Detail">
                     </div>
                 </div>
-
             </div>
         </section>
 
         <section id="story" style="margin-bottom: 50px; padding-top: 50px;">
-            <div class="section-header" data-aos="fade-up">
-                <h2>My Story</h2>
-            </div>
-            
+            <div class="section-header" data-aos="fade-up"><h2>My Story</h2></div>
             <div class="timeline-container">
-                
                 <div class="timeline-row">
-                    <div class="timeline-image-box" data-aos="fade-right" data-aos-delay="0" onclick="openModal(this)">
-                        <img src="https://placehold.co/400x300/566c5b/ffffff?text=College+Photo" alt="大学照片" class="timeline-photo">
+                    <div class="timeline-image-box" data-aos="fade-right" onclick="openModal(this)">
+                        <img src="https://placehold.co/400x300/566c5b/ffffff?text=College+Photo" class="timeline-photo">
                         <div class="hidden-content" style="display:none;">
-                            <div class="full-title">大学篇：自由与探索</div>
-                            <div class="full-desc">
-                                这里是大学的详细回忆录...<br><br>
-                                2023年，我怀着憧憬步入了大学校园。主修计算机科学的过程中，我不仅学会了如何写代码，更学会了如何用逻辑思维去拆解复杂的问题。
-                            </div>
+                            <div class="full-title">大学篇</div><div class="full-desc">大学回忆...</div>
                             <img class="full-img" src="https://placehold.co/600x400/566c5b/ffffff?text=College+Detail">
                         </div>
                     </div>
-                    <div class="timeline-dot current" data-aos="zoom-in" data-aos-delay="100"></div>
-                    <div class="timeline-content-box" data-aos="fade-left" data-aos-delay="200">
-                        <span class="year-badge">2023 - NOW</span>
-                        <h3>大学篇：自由与探索</h3>
-                        <p>主修计算机科学。开始用代码构建自己的想法，遇见了志同道合的伙伴，加入了社团，正在探索未来的无限可能。</p>
-                    </div>
+                    <div class="timeline-dot current" data-aos="zoom-in"></div>
+                    <div class="timeline-content-box" data-aos="fade-left"><span class="year-badge">2023 - NOW</span><h3>大学篇</h3><p>主修计算机科学...</p></div>
                 </div>
-
                 <div class="timeline-row">
-                    <div class="timeline-image-box" data-aos="fade-right" data-aos-delay="100" onclick="openModal(this)">
-                        <img src="https://placehold.co/400x300/eceadd/566c5b?text=High+School" alt="高中照片" class="timeline-photo">
+                    <div class="timeline-image-box" data-aos="fade-right" onclick="openModal(this)">
+                        <img src="https://placehold.co/400x300/eceadd/566c5b?text=High+School" class="timeline-photo">
                         <div class="hidden-content" style="display:none;">
-                            <div class="full-title">高中篇：奋斗的青春</div>
-                            <div class="full-desc">
-                                那是一段痛并快乐着的时光。<br><br>
-                                每天清晨6点的闹钟，写不完的试卷，还有晚自习后操场上的风。虽然辛苦，但和朋友们为了同一个目标努力的日子，现在想来却是最闪闪发光的。
-                            </div>
-                            <img class="full-img" src="https://placehold.co/600x400/eceadd/566c5b?text=High+School+Detail">
+                            <div class="full-title">高中篇</div><div class="full-desc">高中回忆...</div>
+                            <img class="full-img" src="https://placehold.co/600x400/eceadd/566c5b?text=HS+Detail">
                         </div>
                     </div>
-                    <div class="timeline-dot" data-aos="zoom-in" data-aos-delay="200"></div>
-                    <div class="timeline-content-box" data-aos="fade-left" data-aos-delay="300">
-                        <span class="year-badge">2020 - 2023</span>
-                        <h3>高中篇：奋斗的青春</h3>
-                        <p>那是书桌上堆满试卷的日子。虽然辛苦，但每晚的夕阳和操场上的奔跑，都是最珍贵的回忆。</p>
-                    </div>
+                    <div class="timeline-dot" data-aos="zoom-in"></div>
+                    <div class="timeline-content-box" data-aos="fade-left"><span class="year-badge">2020 - 2023</span><h3>高中篇</h3><p>奋斗的青春...</p></div>
                 </div>
-
                 <div class="timeline-row">
-                    <div class="timeline-image-box" data-aos="fade-right" data-aos-delay="200" onclick="openModal(this)">
-                        <img src="https://placehold.co/400x300/eceadd/566c5b?text=Middle+School" alt="少年照片" class="timeline-photo">
+                    <div class="timeline-image-box" data-aos="fade-right" onclick="openModal(this)">
+                        <img src="https://placehold.co/400x300/eceadd/566c5b?text=Middle+School" class="timeline-photo">
                         <div class="hidden-content" style="display:none;">
-                            <div class="full-title">少年篇：好奇的萌芽</div>
-                            <div class="full-desc">
-                                这个阶段我第一次接触到了电脑，打开了新世界的大门。<br><br>
-                                我开始对这个世界充满了“为什么”。为什么游戏能运行？为什么天空是蓝的？也是在这个时候，我读完了人生第一本长篇小说...
-                            </div>
-                            <img class="full-img" src="https://placehold.co/600x400/eceadd/566c5b?text=Middle+School+Detail">
+                            <div class="full-title">少年篇</div><div class="full-desc">少年回忆...</div>
+                            <img class="full-img" src="https://placehold.co/600x400/eceadd/566c5b?text=MS+Detail">
                         </div>
                     </div>
-                    <div class="timeline-dot" data-aos="zoom-in" data-aos-delay="300"></div>
-                    <div class="timeline-content-box" data-aos="fade-left" data-aos-delay="400">
-                        <span class="year-badge">2011 - 2020</span>
-                        <h3>少年篇：好奇的萌芽</h3>
-                        <p>第一次接触电脑，第一次读完一本长篇小说。在这个阶段，我开始对这个世界产生了无数个“为什么”。</p>
-                    </div>
+                    <div class="timeline-dot" data-aos="zoom-in"></div>
+                    <div class="timeline-content-box" data-aos="fade-left"><span class="year-badge">2011 - 2020</span><h3>少年篇</h3><p>好奇的萌芽...</p></div>
                 </div>
-
                 <div class="timeline-row">
-                    <div class="timeline-image-box" data-aos="fade-right" data-aos-delay="300" onclick="openModal(this)">
-                        <img src="https://placehold.co/400x300/eceadd/566c5b?text=Childhood" alt="童年照片" class="timeline-photo">
+                    <div class="timeline-image-box" data-aos="fade-right" onclick="openModal(this)">
+                        <img src="https://placehold.co/400x300/eceadd/566c5b?text=Childhood" class="timeline-photo">
                         <div class="hidden-content" style="display:none;">
-                            <div class="full-title">幼年篇：梦的起点</div>
-                            <div class="full-desc">
-                                记忆里只有模糊的暖色调。<br><br>
-                                幼儿园的滑滑梯，外婆家的蒲扇，还有夏天永远吃不完的西瓜。那时候的世界很小，快乐却很大。
-                            </div>
+                            <div class="full-title">幼年篇</div><div class="full-desc">童年回忆...</div>
                             <img class="full-img" src="https://placehold.co/600x400/eceadd/566c5b?text=Childhood+Detail">
                         </div>
                     </div>
-                    <div class="timeline-dot" data-aos="zoom-in" data-aos-delay="400"></div>
-                    <div class="timeline-content-box" data-aos="fade-left" data-aos-delay="500">
-                        <span class="year-badge">THE BEGINNING</span>
-                        <h3>幼年篇：梦的起点</h3>
-                        <p>无忧无虑的时光。那时的世界很小，只有家和幼儿园的滑滑梯，但那里的快乐很纯粹。</p>
-                    </div>
+                    <div class="timeline-dot" data-aos="zoom-in"></div>
+                    <div class="timeline-content-box" data-aos="fade-left"><span class="year-badge">THE BEGINNING</span><h3>幼年篇</h3><p>梦的起点...</p></div>
                 </div>
             </div>
         </section>
@@ -445,7 +365,8 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ offset: 80, duration: 800, easing: 'ease-out-quad', once: false, mirror: true });
+        // 初始化动画
+        AOS.init({ offset: 120, duration: 800, easing: 'ease-out-quad', once: false, mirror: true });
         
         // 滚动监听
         const sections = document.querySelectorAll('section[id]');
@@ -481,15 +402,14 @@
             document.body.style.overflow = 'auto';
         }
 
-        // 🔥🔥🔥 核心：四季自动换肤脚本 🔥🔥🔥
+        // 🔥🔥🔥 四季自动换肤脚本 🔥🔥🔥
         document.addEventListener('DOMContentLoaded', () => {
             
-            // 1. 获取当前月份 (0=1月, 11=12月)
-            // 你可以通过修改这里的 + 0 来测试不同月份的效果
+            // 👇 修改这个数字测试季节: 2=春, 6=夏, 9=秋, 11=冬
             const month = new Date().getMonth(); 
 
             // 👇 测试春天的改法 (3月，填 2)：
-             const month = 2; 
+            // const month = 2; 
             
             // 👇 测试夏天的改法 (7月，填 6)：
             // const month = 6; 
@@ -500,101 +420,80 @@
             // 👇 测试冬天的改法 (12月，填 11)：
             // const month = 11;
             
-            // 2. 定义四季的配置
-            let season = 'spring'; // 默认
-            
-            // 季节判断逻辑 (北半球)
-            if (month >= 2 && month <= 4) { season = 'spring'; }      // 3,4,5月 春
-            else if (month >= 5 && month <= 7) { season = 'summer'; } // 6,7,8月 夏
-            else if (month >= 8 && month <= 10) { season = 'autumn'; }// 9,10,11月 秋
-            else { season = 'winter'; }                               // 12,1,2月 冬
+            let season = 'spring';
+            if (month >= 2 && month <= 4) { season = 'spring'; }
+            else if (month >= 5 && month <= 7) { season = 'summer'; }
+            else if (month >= 8 && month <= 10) { season = 'autumn'; }
+            else { season = 'winter'; }
 
-            // 3. 详细的主题配置
             const themes = {
                 spring: {
                     mainRed: '#7fb80e',   // 嫩芽绿
                     textDark: '#4a5d23',  // 深草绿
-                    iconClass: 'fa-seedling', // Hero区域的图标
-                    // 掉落物：幼苗，莲花，花瓣(用扇子代替)
-                    fallingIcons: ['fa-seedling', 'fa-spa', 'fa-fan'], 
-                    // 掉落颜色：鲜绿，金，粉，浅绿
-                    leafColors: ['#7fb80e', '#cba258', '#f19ec2', '#90d743']
+                    iconClass: 'fa-seedling', 
+                    // 春天掉落物：幼苗，四叶草，普通叶子
+                    fallingIcons: ['fa-seedling', 'fa-leaf', 'fa-clover'], 
+                    leafColors: ['#7fb80e', '#cba258', '#90d743']
                 },
                 summer: {
-                    mainRed: '#f0a500',   // 向日葵黄/琥珀色
+                    mainRed: '#f0a500',   // 向日葵黄
                     textDark: '#8B4500',  // 深橙褐色
                     iconClass: 'fa-sun',
-                    // 掉落物：排球，遮阳伞，冰淇淋，太阳
-                    fallingIcons: ['fa-volleyball', 'fa-umbrella-beach', 'fa-ice-cream', 'fa-sun'],
-                    // 掉落颜色：亮橙，黄，天蓝，红
+                    // 夏天掉落物：排球，伞，冰淇淋
+                    fallingIcons: ['fa-volleyball', 'fa-umbrella-beach', 'fa-ice-cream'],
                     leafColors: ['#f0a500', '#ffeb3b', '#29b6f6', '#ff5722']
                 },
                 autumn: {
-                    mainRed: '#a0522d',   // 赭石色/枫叶红
-                    textDark: '#3e2723',  // 深咖啡色
+                    mainRed: '#a0522d',   // 枫叶红
+                    textDark: '#3e2723',  // 深咖啡
                     iconClass: 'fa-canadian-maple-leaf',
-                    // 掉落物：枫叶，羽毛，叶子，四叶草
-                    fallingIcons: ['fa-canadian-maple-leaf', 'fa-feather', 'fa-leaf', 'fa-clover'],
-                    // 掉落颜色：红，棕，金，深红
+                    // 秋天掉落物：枫叶，羽毛，叶子
+                    fallingIcons: ['fa-canadian-maple-leaf', 'fa-feather', 'fa-leaf'],
                     leafColors: ['#a0522d', '#d2691e', '#daa520', '#8b0000']
                 },
                 winter: {
-                    mainRed: '#5f9ea0',   // 冰川蓝/军校蓝
+                    mainRed: '#5f9ea0',   // 冰川蓝
                     textDark: '#1c2833',  // 深灰蓝
                     iconClass: 'fa-snowflake',
-                    // 掉落物：雪花，圆圈(雪球)
+                    // 冬天掉落物：雪花，圆点
                     fallingIcons: ['fa-snowflake', 'fa-circle'],
-                    // 掉落颜色：白，浅蓝，银，深蓝
                     leafColors: ['#ffffff', '#afeeee', '#c0c0c0', '#4682b4']
                 }
             };
 
             const currentTheme = themes[season];
 
-            // 4. 应用 CSS 变量 (换肤)
+            // 1. 换色
             const root = document.documentElement;
             root.style.setProperty('--main-red', currentTheme.mainRed);
             root.style.setProperty('--text-dark', currentTheme.textDark);
 
-            // 5. 更改 Hero 区域的中心图标
+            // 2. 换Hero图标 (加了安全检查，防止崩溃)
             const heroIcon = document.getElementById('season-icon');
             if(heroIcon) {
-                // 移除所有可能的图标类
-                heroIcon.classList.remove('fa-leaf', 'fa-seedling', 'fa-sun', 'fa-canadian-maple-leaf', 'fa-snowflake');
-                // 添加当前季节图标
-                heroIcon.classList.add(currentTheme.iconClass);
+                heroIcon.className = ''; // 清空旧图标
+                heroIcon.classList.add('fas', currentTheme.iconClass);
             }
 
-            // 6. 生成掉落物
+            // 3. 生成掉落物
             const container = document.getElementById('leaf-container');
             const numLeaves = 30;
 
             for (let i = 0; i < numLeaves; i++) {
                 const leaf = document.createElement('i');
-                
-                // 随机选择当前季节的图标
                 const randomIcon = currentTheme.fallingIcons[Math.floor(Math.random() * currentTheme.fallingIcons.length)];
-                
                 leaf.classList.add('fas', randomIcon, 'falling-leaf');
-
-                // 随机位置
                 leaf.style.left = `${Math.random() * 100}%`;
-                // 随机颜色
                 leaf.style.color = currentTheme.leafColors[Math.floor(Math.random() * currentTheme.leafColors.length)];
-                
-                // 随机大小 (雪球稍微小一点，其他的正常)
                 let size = Math.random() * 18 + 12;
-                if (randomIcon === 'fa-circle') size = Math.random() * 8 + 5; // 雪球更小
+                if (randomIcon === 'fa-circle') size = Math.random() * 8 + 5; 
                 leaf.style.fontSize = `${size}px`;
-                
-                // 动画参数
                 const durationFall = Math.random() * 15 + 15; 
                 const durationSway = Math.random() * 10 + 10;
                 leaf.style.animationDuration = `${durationFall}s, ${durationSway}s`;
                 const delay = -(Math.random() * 30);
                 leaf.style.animationDelay = `${delay}s, ${delay}s`;
                 leaf.style.opacity = Math.random() * 0.5 + 0.3;
-
                 container.appendChild(leaf);
             }
         });
