@@ -143,9 +143,48 @@
         .modal-content::after { content: ''; position: absolute; top: 6px; left: 6px; right: 6px; bottom: 6px; border: 1px solid var(--main-red); opacity: 0.5; pointer-events: none; transition: border-color 0.5s ease;}
         .modal-img-box { width: 50%; position: relative; }
         .modal-img-box img { width: 100%; height: 100%; object-fit: cover; }
-        .modal-text-box { width: 50%; padding: 3rem; overflow-y: auto; display: flex; flex-direction: column; justify-content: center; }
-        .modal-text-box h3 { font-family: 'Cinzel Decorative', serif; color: var(--main-red); font-size: 2rem; margin-top: 0; margin-bottom: 1.5rem; border-bottom: 2px solid rgba(86, 108, 91, 0.2); padding-bottom: 10px; display: inline-block; transition: color 0.5s ease;}
-        .modal-text-box p { font-size: 1rem; line-height: 1.8; color: #555; white-space: pre-wrap; }
+        .modal-text-box { 
+            width: 50%; 
+            /* ⬆️ 上下内边距调大 (60px)，左右 (40px) */
+            padding: 60px 40px; 
+            overflow-y: auto; 
+            display: flex; 
+            flex-direction: column; 
+            
+            /* ❌ 原来是 justify-content: center; (垂直居中) */
+            /* ✅ 改为 flex-start，让文字从顶部开始排列，更自然 */
+            justify-content: flex-start; 
+            
+            /* 确保文字整体对齐方式 */
+            text-align: left; 
+        }
+        .modal-text-box h3 { 
+            font-family: 'Cinzel Decorative', serif; 
+            color: var(--main-red); 
+            font-size: 2.2rem; /* 字体稍微加大一点 */
+            margin-top: 0; 
+            margin-bottom: 2rem; /* 标题和正文拉开距离 */
+            
+            /* 装饰线 */
+            border-bottom: 2px solid rgba(86, 108, 91, 0.2); 
+            padding-bottom: 15px; 
+            
+            /* 让标题在容器里水平居中 */
+            align-self: center; 
+            display: inline-block; 
+            transition: color 0.5s ease;
+        }
+        .modal-text-box p { 
+            font-size: 1.05rem; 
+            line-height: 2; /* 行高加大，增加呼吸感 */
+            color: #555; 
+            white-space: pre-wrap; /* 保留换行 */
+            
+            /* 推荐：两端对齐，会让大段文字看起来像书本一样整齐 */
+            text-align: justify; 
+            
+            /* 或者用 text-align: left; (左对齐) 也可以 */
+        }
         .close-btn { position: absolute; top: 15px; right: 20px; font-size: 2rem; color: var(--main-red); cursor: pointer; z-index: 10; transition: transform 0.2s, color 0.5s ease; }
         .close-btn:hover { transform: rotate(90deg); color: var(--gold-accent); }
 
