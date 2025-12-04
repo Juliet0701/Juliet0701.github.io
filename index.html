@@ -150,7 +150,7 @@
             overflow-y: auto; 
             display: flex; 
             flex-direction: column; 
-            //justify-content: flex-start; /* 顶部对齐 */
+            justify-content: flex-start; /* 顶部对齐 */
             text-align: left; /* 左对齐 */
         }
         
@@ -171,9 +171,9 @@
         /* 正文修正 */
         .modal-text-box p { 
             font-size: 1.05rem; 
-            line-height: 2; 
+            line-height: 1.5; 
             color: #555; 
-            text-align: justify; /* 两端对齐 */
+            text-align: center; /* 两端对齐 */
         }
         .close-btn { position: absolute; top: 15px; right: 20px; font-size: 2rem; color: var(--main-red); cursor: pointer; z-index: 10; transition: transform 0.2s, color 0.5s ease; }
         .close-btn:hover { transform: rotate(90deg); color: var(--gold-accent); }
